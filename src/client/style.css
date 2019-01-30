@@ -1,0 +1,288 @@
+#closeButton, #miniButton {
+    -fx-background-color: transparent;
+    -fx-text-fill: #006622;
+    -fx-background-radius: 0;
+    -fx-font-size: 16pt;
+}
+
+#closeButton:hover, #miniButton:hover {
+    -fx-background-color: linear-gradient(#006622, #003311);
+    -fx-text-fill: #262626;
+    -fx-background-insets: 0;
+}
+
+#closeButton:pressed, #miniButton:pressed {
+    -fx-background-color: #004d1a;
+    -fx-text-fill: #262626;
+}
+
+#usersListButton {
+    -fx-background-color: transparent;
+    -fx-background-image: url('user.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
+    -fx-background-size: 24px;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-border-color: #006622;
+}
+
+#usersListButton:hover {
+    -fx-background-color: #006622;
+    -fx-background-image: url('user-hover.png');
+    -fx-border-color: #006622;
+}
+
+#usersListButton:pressed {
+    -fx-background-color: #004d1a;
+    -fx-border-color: #006622;
+}
+
+#usersListButton:selected {
+    -fx-background-color: #004d1a;
+    -fx-background-image: url('user-hover.png');
+    -fx-border-color: #006622;
+}
+
+#sendButton, #submitButton {
+    -fx-background-color: #262626;
+    -fx-text-fill: #006622;
+    -fx-background-radius: 0;
+    -fx-border-color: #006622;
+    -fx-background-insets: 0;
+}
+
+#sendButton:hover, #submitButton:hover {
+    -fx-background-color: #006622;
+    -fx-text-fill: #262626;
+    -fx-background-insets: 0;
+}
+
+#sendButton:pressed, #submitButton:pressed {
+    -fx-background-color: #004d1a;
+    -fx-text-fill: #262626;
+}
+
+#rootPane {
+    -fx-background-color: #262626;
+    -fx-border-color: #006622;
+}
+
+#userLabel {
+    -fx-text-fill: #006622;
+    -fx-font: 12pt Arial;
+}
+
+#errorLabel {
+    -fx-text-fill: #808080;
+    -fx-font: 10pt Arial;
+}
+
+#newUserLabel {
+    -fx-text-fill: #006622;
+    -fx-font: normal 10pt Arial;
+}
+
+#newUserBlock {
+    -fx-alignment: center;
+}
+
+.label {
+    -fx-text-fill: #006622;
+    -fx-font: 20pt Calibri;
+}
+
+#chatText {
+    -fx-text-fill: #b3b3b3;
+    -fx-font: normal 10pt Arial;
+    -fx-border-color: transparent;
+    -fx-background-color: #006622;
+    -fx-background-radius: 5 5 0 5;
+    -fx-padding: 3 5 3 5;
+}
+
+#chatName {
+    -fx-font: normal 8pt Arial;
+}
+
+#chatBlock {
+    -fx-max-width: 393;
+    -fx-alignment: center-right;
+    -fx-border-color: transparent;
+    -fx-border-width: 0 0 0 30;
+}
+
+#receivedBlock {
+    -fx-max-width: 393;
+    -fx-alignment: center-left;
+    -fx-border-color: transparent;
+    -fx-border-width: 0 0 0 0;
+}
+
+#senderName {
+    -fx-font: normal 8pt Arial;
+    -fx-text-fill: #4d4d4d;
+}
+
+#receivedText {
+    -fx-background-color: #4d4d4d;
+    -fx-text-fill: #b3b3b3;
+    -fx-font: normal 10pt Arial;
+    -fx-padding: 3 5 3 5;
+    -fx-background-radius: 5 5 5 0;
+}
+
+.tool-bar {
+    -fx-background-color: linear-gradient(#404040, #262626);
+    -fx-border-color: #006622;
+}
+
+.text-area {
+    -fx-text-box-border: transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-text-fill: #b3b3b3;
+    -fx-caret-color: #b3b3b3;
+    -fx-border-color: #006622;
+    -fx-background-radius: 0;
+    -fx-background-color: #262626;
+    -fx-font-family: Arial;
+}
+
+.text-area .content {
+    -fx-background-color: #262626;
+    -fx-border-color: #262626;
+}
+
+.text-field {
+    -fx-text-box-border: transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-text-fill: #b3b3b3;
+    -fx-caret-color: #b3b3b3;
+    -fx-border-color: #006622;
+    -fx-background-radius: 0;
+    -fx-background-color: #262626;
+    -fx-font-family: Arial;
+}
+
+.text-field .content {
+    -fx-background-color: #262626;
+    -fx-border-color: #262626;
+}
+
+.text-area .scroll-bar:vertical {
+    -fx-background-color: #262626;
+    -fx-border-color: #262626;
+    -fx-background-radius: 0;
+}
+
+.text-area .scroll-bar .thumb {
+	-fx-background-color: transparent;
+}
+
+.text-area .scroll-bar:hover .thumb {
+    -fx-background-color: #262626;
+    -fx-border-color: #262626;
+    -fx-background-radius: 0;
+    -fx-background-color: #006622;
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 2.0em;
+}
+
+.text-area .scroll-bar .thumb:pressed {
+    -fx-background-color: #004d1a;
+}
+
+.text-area .scroll-bar .increment-button:hover,
+.text-area .scroll-bar .decrement-button:hover {
+    -fx-background-color: #262626;
+}
+
+.list-view {
+    -fx-background-color: #262626;
+    -fx-border-color: #006622;
+    -fx-faint-focus-color: #006622;
+    -fx-text-fill: #006622;
+}
+
+.list-view:focused {
+    -fx-highlight-fill: #006622;
+    -fx-background-insets: 0;
+}
+
+.list-view .list-cell:even,
+.list-view .list-cell:odd {
+    -fx-background-color: #262626;
+    -fx-text-fill: #006622;
+}
+
+.list-view .scroll-bar {
+    -fx-background-color: #262626;
+    -fx-border-color: #262626;
+    -fx-background-radius: 0;
+}
+
+.list-view .scroll-bar:hover .thumb {
+    -fx-background-color: #262626;
+    -fx-border-color: #262626;
+    -fx-background-radius: 0;
+    -fx-background-color: #006622;
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 2.0em;
+}
+
+.list-view .scroll-bar .increment-button:hover,
+.list-view .scroll-bar .decrement-button:hover {
+    -fx-background-color: #262626;
+}
+
+.list-view .scroll-bar .thumb {
+    -fx-background-color: transparent;
+}
+
+.list-view .scroll-bar .thumb:pressed {
+    -fx-background-color: #004d1a;
+}
+
+
+.list-view .scroll-bar:vertical .increment-button,
+.list-view .scroll-bar:vertical .decrement-button,
+.list-view .scroll-bar:horizontal .increment-button,
+.list-view .scroll-bar:horizontal .decrement-button {
+    -fx-background-color :transparent;
+    -fx-background-radius : 0.0em;
+    -fx-padding :0.0 10.0 0.0 0.0;
+
+}
+
+.list-view .scroll-bar .increment-arrow,
+.list-view .scroll-bar .decrement-arrow{
+    -fx-shape : " ";
+    -fx-padding :0.15em 0.0;
+}
+
+.text-area .context-menu .label {
+    -fx-font: normal 10pt Arial;
+    -fx-text-fill: #1a1a1a;
+}
+
+#uLBox {
+    -fx-background-color: #262626;
+    -fx-border-color: #006622;
+}
+
+#onlUsersList {
+    -fx-border-color: #006622 #262626 #262626 #262626;
+    -fx-padding: 5;
+}
+
+#usersList .list-cell {
+    -fx-border-color: #262626 #262626 #006622 #262626;
+    -fx-border-style: segments(5,5,5,5);
+}
+
+#uListLbl {
+    -fx-font: normal 10pt Arial;
+    -fx-padding: 5 0 5 5;
+}
