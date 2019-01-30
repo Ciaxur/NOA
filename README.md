@@ -4,7 +4,7 @@ A team project to create a Java Based Messenger that can run locally on any mach
 
 ---
 #### Pre-Requisites
-The main IDE used for this project is **`IntelliJ IDEA`** Version 2018. Feel free to use any IDE preffered but please adhere to the [Directory Structure](docs/dir_structure).
+The main IDE used for this project is **`IntelliJ IDEA`** Version 2018. Feel free to use any IDE preffered but please adhere to the [Directory Structure](docs/dir_structure.md).
 
 ---
 ### License
