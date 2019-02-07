@@ -5,7 +5,7 @@
 
 - Add a **doc** directory for GitHub Pages
 
-- Add a **documentation** Markdown file to explain functionallity of each Class
+- Add a **documentation** Markdown file to explain APIs(In thy future...), how to use, what its uses are, etc...
 
 - Add a **Contribution** Markdown file to set rules on how to contribute :)
 
@@ -13,6 +13,7 @@
 
 - Add more Details to the **README** Markdown file
     - Add images
+    - Integrated Status Bars
     - Add instructions
     - Add more **docs** file (Better Organized)
 
