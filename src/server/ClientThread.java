@@ -15,29 +15,56 @@ import java.net.SocketException;
 
 public class ClientThread extends Thread {
 
+    // Connection/Server Data
     private Socket socket;
-    private int id;
     private MessagePacket msgPack = null;
     private ObjectOutputStream output = null;
     private ObjectInputStream input = null;
+
+    // Client Data
+    private int id;
     private String username;
 
 
-    ClientThread(Socket socket, int id){
+    /**
+     * Constructor that sets up Connection and Client initial Data
+     *
+     * @param socket - Server accepted Socket Connection
+     * @param id - Client's Assigned ID
+     */
+    public ClientThread(Socket socket, int id){
         this.socket = socket;
         this.id = id;
     }
 
+    /** @return Current Client's ID */
+    public int getClientID() { return id; }
+
+    /** @return Current Client's UserName */
+    public String getUsername() { return username; }
+
+    /**
+     * Thread Overloaded 'run' Method
+     *  Initiate Client-Server Connection
+     *  Handle Message Packets and Input/Output Streams
+     *  Handle User Connect/Disconnect
+     */
     public void run(){
+        // Start Client-Server Connection
         try {
+            // Setup Streams
             output = new ObjectOutputStream(socket.getOutputStream());
 
+            // While loop to receive all the Output Streams from Clients
             while(true) {
-                // had to redeclare in loop because not appendable, maybe because receiving from different output streams
+                // Re-initiate OutputStream to get all Output Streams from Clients
                 input = new ObjectInputStream(socket.getInputStream());
 
+                // Convert Input Stream Object Recieved into a MessagePacket Object
                 msgPack = (MessagePacket) input.readObject();
 
+                // Check if a User has Connected
+                // Get that User's Name and update chat list
                 if(msgPack.getContentsData() == null){
                     msgPack.setConnectingStatus(true);
                     username = msgPack.getUsername();
@@ -45,17 +72,32 @@ public class ClientThread extends Thread {
                     msgPack.setChatList(ServerMain.getUsersList());
                 }
 
+                // Send Message from current UserThread to all the Users in
+                //  the clientList
                 for (ClientThread ct : ServerMain.getClientList()) {
+
+                    // Make sure there is Content to Send
+                    // Make sure not to send MessagePack to self
                     if(msgPack.getContentsData() != null) {
+                        // TODO :: Remove this redundant conditional statement
+                        // Redundant code?????
                         if (this.id != ct.id) {
                             ct.output.writeObject(msgPack);
                             ct.output.flush();
                         }
-                    } else {
+                    }
+
+
+                    // If there is no Content in the MessagePack Object received...
+                    else {
+                        // TODO :: Remove this redundant conditional statement
+                        // Redundant code?????
                         if(this.id != ct.id) {
                             ct.output.writeObject(msgPack);
                             ct.output.flush();
                         }
+
+                        // TODO :: Have this alone in a separate conditional
                         else{
                             msgPack.setUsername("You");
                             ct.output.writeObject(msgPack);
@@ -64,9 +106,14 @@ public class ClientThread extends Thread {
                         }
                     }
                 }
+
+                // Reset Output Stream
                 output.reset();
             }
-        } catch (SocketException se) {
+        }
+
+        // Handle Connection Exceptions
+        catch (SocketException se) {
             se.printStackTrace();
         }
         catch (IOException e){
@@ -74,28 +121,46 @@ public class ClientThread extends Thread {
         }
         catch (ClassNotFoundException e1) {
             e1.printStackTrace();
-        } finally {
+        }
+
+        // Terminate ClientThread
+        finally {
             closeClient();
         }
     }
 
-    void decrementIndex(){
+    /** Decrements Current Thread's Index */
+    public void decrementIndex(){
         id--;
     }
 
+    /** Terminate Client Properly closing connections and updating server list */
     private void closeClient() {
+        // Close up sockets, streams, and update list
         try {
             socket.close();
             input.close();
             output.close();
             ServerMain.removeFromList(id);
 
-        } catch (IOException e) {
+        }
+
+        // Handle Exceptions
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    void sendDisconnectUpdate(MessagePacket packet){
+    /**
+     * Notify Current ClientThread that a User has disconnected
+     *  This method is mainly used by the Server
+     *
+     * @param packet - Message Packet instance with User Disconnected Data
+     */
+    public void sendDisconnectUpdate(MessagePacket packet){
+        // Write the MessagePacket to the Output Stream
+        // ClientThread will handle this msgPacket in the 'run' method
+        //  using the Output Stream
         try {
             output.writeObject(packet);
         } catch (IOException e){
