@@ -22,3 +22,12 @@
     - Re-organize sections and split up main classes, Server and Client, into sub-classes for more readability
     - Have more variables instead of literals in parameters
     - Have main data such as, urls and ports, in a sub-class for easy access
+
+- **Server-Side** Implementations
+    - Make Server un-static?
+        - To solve the issue with every client thread getting an old Stack?
+    - Better randomly hashed id's?
+    - Better crash handling
+    - Add a GUI for the Server?
+        - Maybe combine it within the Client so that every client is a "mini-server"
+        - Or Seperate Client - Server
