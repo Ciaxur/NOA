@@ -23,13 +23,14 @@ import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-/*
- * The primary controller that sends and receives messages from the server as well as controlling
- * fxml functions and variables
- */
 
+/**
+ *  The primary controller that sends and receives messages from the server as well as controlling
+ *   fxml functions and variables
+ */
 public class Controller implements Initializable {
 
+    // FXML Objects Variables
     @FXML private ToolBar headerBar;
     @FXML private TextArea chatBar;
     @FXML private Button closeButton;
@@ -37,7 +38,10 @@ public class Controller implements Initializable {
     @FXML private ToggleButton usersListButton;
     @FXML public ListView chatList;
 
+    // JAVAFX Variables
     private Stage stage, usersStage;
+
+    // Client Variables
     private double xPos, yPos;
     private Socket socket = null;
     private MessagePacket msgOut = null;
@@ -45,13 +49,23 @@ public class Controller implements Initializable {
     private String username;
     private ListView<String> onlineUsersList;
 
-
+    // Chat List Variables
+    // oList -> The Chat List History that holds Chat Blocks (VBoxes)
     private static ObservableList<VBox> oList = FXCollections.observableArrayList();
     private static ObservableList<String> obUserList = FXCollections.observableArrayList();
 
+    // DEBUG Variables
+    private int PORT = 5000;                // Socket Port to Connect to
+    private String HOST = "localhost";      // Socket Host URL to Connect to
+
+
+
+    /**
+     * JAVAFX Override Method
+     *  Pretty Much a Constructor
+     */
     @Override
     public void initialize(URL url, ResourceBundle resource) {
-
         usersStage = new Stage();
         
         // Allows for stage to be moved around by dragging the toolbar aka headerBar
@@ -66,41 +80,69 @@ public class Controller implements Initializable {
             usersStage.setY(stage.getY() +40);
         });
 
+
+        // Chat Bar Properties
         chatBar.setWrapText(true);
 
+        // Toolbar Buttons
         closeButton.setPadding(Insets.EMPTY);
         miniButton.setPadding(Insets.EMPTY);
     }
 
+    /** FXML Method - Close the Client Application */
     @FXML
     private void closeClicked() {
         System.exit(0);
     }
 
+    /** FXML Method - Minimize Client Application */
     @FXML
     private void minimizeStage(MouseEvent e){
         ((Stage)((Button)e.getSource()).getScene().getWindow()).setIconified(true);
         if(usersStage.isShowing()) { usersListButton.fire(); }
     }
     
-    // on clicked method for the send button
-    @FXML private void sendMessage(){
+    /**
+     * FXML Method - Sends a Message in the Message Text Box
+     *  Handles:
+     *      - Message Sending
+     *      - Chat History
+     *
+     * @param cleanStr - Cleaned/Modified String | Trimmed and ready to go
+     */
+    @FXML
+    private void sendMessage(String cleanStr){
+        // Create a ChatBlock
         VBox chatBlock = new VBox();
         chatBlock.setId("chatBlock");
 
-        String msg = chatBar.getText().trim();
+        // Obtain the Massage from the Message Box
+        // Clean up the Text
+        String msg = cleanStr;
         chatBar.clear();
 
+
+        // Add the Message to a Chat Block for Chat History
+        //  to show Sent & Received Message and from whom
+        // Create a Label Object
+        // Set Properties for the Label
+        // Append the Label to the ChatBlock Object
         Label chatText = new Label(msg);
         chatText.setId("chatText");
         chatText.setWrapText(true);
         chatBlock.getChildren().add(chatText);
 
+        // Create a Label to hold the User's Name
+        // Set Properties for it
+        // Append Label to the ChatBlock Object
         Label chatName = new Label(username);
         chatName.setId("chatName");
-
         chatBlock.getChildren().add(chatName);
 
+        // Add the Chat Block to the Chat History List
+        // Send the Message Data to the Server
+        // Apply the Chat History List to the Current Chat List
+        // Scroll to newest message
         oList.add(chatBlock);
         sendToServer(msg, chatName.getText());
         chatList.setItems(oList);
@@ -108,38 +150,81 @@ public class Controller implements Initializable {
         chatBar.requestFocus();
     }
     
-    //Ctrl + Enter sends message
+    /**
+     * Handles Key Presses on Chat Message Box
+     *  Sends Message
+     *  Create a new line
+     *
+     * @param key - KeyEvent Object
+     */
     @FXML
-    private void enterClicked(KeyEvent ke){
-        if(ke.isControlDown() && ke.getCode() == KeyCode.ENTER) { 
-            sendMessage();
+    private void keyPressed(KeyEvent key){
+        // Append a New Line
+        if(key.isControlDown() && key.getCode() == KeyCode.ENTER) {
+            chatBar.appendText("\n");
+        }
+
+        // Only Enter was clicked, so Send Message!
+        else if (key.getCode() == KeyCode.ENTER){
+            // Verify Chat Text is not Empty!
+            String str = chatBar.getText().trim();
+
+            // If valid, send message
+            if(str.length() != 0) {
+                sendMessage(str);
+            }
+
+            // Clear ChatBox
+            else {
+                chatBar.clear();
+            }
         }
     }
     
-    //shows or hides the list of users connected to the server
+    /** Toggles Online User List */
     @FXML
     private void usersListToggled(){
+        // Hide List
         if(usersStage.isShowing()){
             usersStage.hide();
-        } else {
+        }
+
+        // Show List
+        else {
             usersStage.setX(stage.getX() + 440);
             usersStage.setY(stage.getY() + 40);
             usersStage.show();
         }
     }
-    
-    // main method of the class which runs a thread to listen for incoming messages, connected, or disconnected users
-    void runClient(){
+
+
+
+    /**
+     * Handles Client Thread
+     *  - Listens for Incoming Messages
+     *  - Handles New Connected Users
+     *  - Handles Disconnected Users
+     */
+    public void runClient(){
+
+        // Try Client Connection
         try {
-            socket = new Socket("localhost", 5000);
+            // Create/Connect to Socket
+            // Display Connection Success in Console
+            socket = new Socket(this.HOST, this.PORT);
             System.out.println("Sockets connected");
 
+            // Create a Message Packet Object to notify
+            //  other users Client Connected
             msgOut = new MessagePacket();
-
-            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             msgOut.setData(null, username);
+
+            // Create Output Stream to send out Message Packet Object
+            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             out.writeObject(msgOut);
 
+            // Create Online Users List
+            // Setup List's Properties
             onlineUsersList = new ListView<>();
             onlineUsersList.setId("onlUsersList");
             Label uListLabel = new Label("Users:");
@@ -147,99 +232,148 @@ public class Controller implements Initializable {
             VBox usersListBox = new VBox(uListLabel, onlineUsersList);
             usersListBox.setId("uLBox");
 
-            Runnable msgListener = () ->{
+
+            // Create a Runnable Interface to be run by a thread
+            // This Thread Listens for Incoming Messages
+            new Thread(()-> {
                 try {
-                    // unlike server input stream, had to declare outside loop, maybe because receiving from only one output stream
+                    // Initiate Input Stream for Receiving Messages from Socket
                     ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
 
-                    while (true) {
 
+                    // A While loop to "Listen" for incoming Messages
+                    while (true) {
+                        // Try to read from the Input Stream
+                        // Input Stream receives a Message Packet Object
+                        //  convert the Object to a MessagePacket
                         msgIn = (MessagePacket) input.readObject();
-                        
-                        // if content is not null it means it's not a user connecting or disconnecting but a
-                        // message being received from another client
+
+
+                        // Check if the Message Packet has Data in it (Message)
                         if (msgIn.getContentsData() != null) {
+                            // Create a Chat Block
                             VBox receivedBlock = new VBox();
                             receivedBlock.setId("receivedBlock");
 
+                            // Create a Label to hold the data
                             Label receivedText = new Label();
                             receivedText.setId("receivedText");
                             receivedText.setWrapText(true);
 
+                            // Create a Label to hold the User's Name
                             Label senderName = new Label();
                             senderName.setId("senderName");
 
+                            // Add both Data and Username labels into the Chat Block
                             receivedBlock.getChildren().addAll(receivedText, senderName);
 
+                            // Add the Text into the Labels
                             receivedText.setText(msgIn.getContentsData());
                             senderName.setText(msgIn.getUsername());
                             
-                            // updates main chat screen
+                            // Update Main Chat Screen
+                            // RunLater is because Calculation takes time
+                            //  so when it can, update the Chat Screen
                             Platform.runLater(() -> {
                                 oList.add(receivedBlock);
                                 chatList.setItems(oList);
                             });
-                        } else { // means a client is either connecting or disconnecting
+                        }
+
+
+                        // Message Packet Contents are null meaning
+                        //  New User Connected or a User Disconnected
+                        else {
+                            // Create a Label for the User Connect/Disconnect
                             Label userLabel;
+
+                            // Get Connection Status (Connected/Disconnected)
+                            // Set the Label to Match Status
                             if(msgIn.getConnectingStatus())
                                 userLabel = new Label(msgIn.getUsername() + " connected");
-                             else
-                                userLabel = new Label(msgIn.getUsername() + " disconnected");
+                            else
+                               userLabel = new Label(msgIn.getUsername() + " disconnected");
 
                             userLabel.setId("newUserLabel");
 
+                            // Create a Chat Block
                             VBox newUserBlock = new VBox(userLabel);
                             newUserBlock.setId("newUserBlock");
 
-                          //update main chat
-                            Platform.runLater(() -> {                                
+                            // Update Main Chat with that Chat Block
+                            Platform.runLater(() -> {
+                                // Add Block
                                 oList.add(newUserBlock);
                                 chatList.setItems(oList);
 
-                                // update list of active users
+                                // Update Online User List
                                 obUserList.setAll(msgIn.getChatList());
                                 onlineUsersList.setItems(obUserList);
                             });
                         }
-
                     }
-                } catch (IOException e1) { e1.printStackTrace(); }
-                catch (ClassNotFoundException e2) { e2.printStackTrace(); }
-            };
-            new Thread(msgListener).start();
+                }
 
+                // Handle Exceptions
+                catch (IOException e1) { e1.printStackTrace(); }
+                catch (ClassNotFoundException e2) { e2.printStackTrace(); }
+            }).start();
+
+
+            // Create the Client GUI Scene
             Scene scene = new Scene(usersListBox, 200, 300);
-            scene.getStylesheets().add("client/style.css");
             usersStage.setScene(scene);
             usersStage.initStyle(StageStyle.UNDECORATED);
             usersStage.initOwner(stage);
             usersStage.toFront();
+        }
 
-        } catch(IOException e){
+        // Catch Connection Exception
+        catch(IOException e){
             e.printStackTrace();
         }
     }
     
     // outputs object with username and message to server
-    private void sendToServer(String sentText, String sentName){
+    /**
+     * Sends Message Packet to Server to handle distribution to
+     *  other Connected Clients
+     *
+     * @param message - Message Content
+     * @param username - User's Name
+     */
+    private void sendToServer(String message, String username){
+        // Create Output Stream to Send an Object
+        // Setup MessagePacket with data and send to Server to handle
         try {
             ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
-
-            msgOut.setData(sentText, sentName);
-
+            msgOut.setData(message, username);
             output.writeObject(msgOut);
+        }
 
-        } catch(IOException e){
+        // Handle Output Stream Exceptions
+        catch(IOException e){
             e.printStackTrace();
         }
     }
 
-    void setStage(Stage stage){
+
+    /**
+     * JAVAFX Stage to be set from Login Controller
+     *
+     * @param stage - Stage Object to use
+     */
+    public void setStage(Stage stage){
         this.stage = stage;
     }
 
-    void setName(String name) {
-        username = name;
+    /**
+     * Sets the Client's Username
+     *
+     * @param username - The New Username
+     */
+    public void userName(String username) {
+        this.username = username;
     }
 }
 

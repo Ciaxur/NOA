@@ -44,7 +44,7 @@
     -fx-border-color: #006622;
 }
 
-#sendButton, #submitButton {
+#submitButton {
     -fx-background-color: #262626;
     -fx-text-fill: #006622;
     -fx-background-radius: 0;
@@ -52,13 +52,13 @@
     -fx-background-insets: 0;
 }
 
-#sendButton:hover, #submitButton:hover {
+#submitButton:hover {
     -fx-background-color: #006622;
     -fx-text-fill: #262626;
     -fx-background-insets: 0;
 }
 
-#sendButton:pressed, #submitButton:pressed {
+#submitButton:pressed {
     -fx-background-color: #004d1a;
     -fx-text-fill: #262626;
 }
