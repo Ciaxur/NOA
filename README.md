@@ -1,4 +1,4 @@
-# NOA (Pre-Alpha)
+# NOA (Pre-Alpha v0.0.1)
 
 A team project to create a Java Based Messenger that can run locally on any machine. A Messenger that can connect securly with encryption to allow for true privacy. This project is **NOT** yet complete, so all the features such as Encryption, is **NOT** yet implemented.
 
