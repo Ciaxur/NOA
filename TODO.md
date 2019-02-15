@@ -17,8 +17,12 @@
     - Add instructions
     - Add more **docs** file (Better Organized)
 
-- **Refactoring** a ton of code
-    - Add comments
+- **Aesthetics**
+    - Create a new logo
+        - Add to NOA
+        - Add to README
+
+- **Refactoring**
     - Re-organize sections and split up main classes, Server and Client, into sub-classes for more readability
     - Have more variables instead of literals in parameters
     - Have main data such as, urls and ports, in a sub-class for easy access
@@ -29,5 +33,18 @@
     - Better randomly hashed id's?
     - Better crash handling
     - Add a GUI for the Server?
-        - Maybe combine it within the Client so that every client is a "mini-server"
-        - Or Seperate Client - Server
+        - Maybe combine it within the Client so that 
+
+- **Client-Side** Implementations
+    - Fix Crash when no Server Available
+        - Add a Timeout
+
+- **Later Updates**
+    - Combine Server and Client into a single Instance
+        - Every client is a "mini-server"
+    - Implement Continuous Integration Service
+        - Most Likely **TravisCl**
+
+- **Style Revamp**
+    - Change CSS Style
+    - Have multiple Themes Available to choose from
