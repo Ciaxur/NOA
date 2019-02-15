@@ -8,14 +8,16 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-/*
+/**
  * 	Main class of the client side of the project, it is used to initialize and display the login page
  */
-
 public class ClientMain extends Application {
 
+    /** Application Overloaded Method for JAVAFX GUI s*/
     @Override
     public void start(Stage primaryStage) {
+
+        // Load and Run JAVAFX Application
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("chatLoginGui.fxml"));
             Parent root = loader.load();
@@ -29,7 +31,10 @@ public class ClientMain extends Application {
             primaryStage.setScene(scene);
             primaryStage.getIcons().add(new Image("client/noa_icon.png"));
             primaryStage.show();
-        } catch (Exception e){
+        }
+
+        // Handle Application Exception
+        catch (Exception e){
             e.printStackTrace();
         }
     }
