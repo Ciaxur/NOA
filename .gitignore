@@ -24,5 +24,9 @@ hs_err_pid*
 
 # Directories Ignored
 out/*
-.idea
 src/META-INF
+
+# IntelliJ Configs
+.idea/*
+!.idea/misc.xml
+!.idea/modules.xml
