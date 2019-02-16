@@ -60,7 +60,7 @@ public class ClientThread extends Thread {
                 // Re-initiate OutputStream to get all Output Streams from Clients
                 input = new ObjectInputStream(socket.getInputStream());
 
-                // Convert Input Stream Object Recieved into a MessagePacket Object
+                // Convert Input Stream Object Received into a MessagePacket Object
                 msgPack = (MessagePacket) input.readObject();
 
                 // Check if a User has Connected
@@ -75,35 +75,19 @@ public class ClientThread extends Thread {
                 // Send Message from current UserThread to all the Users in
                 //  the clientList
                 for (ClientThread ct : ServerMain.getClientList()) {
-
                     // Make sure there is Content to Send
                     // Make sure not to send MessagePack to self
-                    if(msgPack.getContentsData() != null) {
-                        // TODO :: Remove this redundant conditional statement
-                        // Redundant code?????
-                        if (this.id != ct.id) {
-                            ct.output.writeObject(msgPack);
-                            ct.output.flush();
-                        }
+                    if (this.id != ct.id) {
+                        ct.output.writeObject(msgPack);
+                        ct.output.flush();
                     }
 
-
                     // If there is no Content in the MessagePack Object received...
-                    else {
-                        // TODO :: Remove this redundant conditional statement
-                        // Redundant code?????
-                        if(this.id != ct.id) {
-                            ct.output.writeObject(msgPack);
-                            ct.output.flush();
-                        }
-
-                        // TODO :: Have this alone in a separate conditional
-                        else{
-                            msgPack.setUsername("You");
-                            ct.output.writeObject(msgPack);
-                            ct.output.flush();
-                            msgPack.setUsername(username);
-                        }
+                    else if(msgPack.getContentsData() == null) {
+                        msgPack.setUsername("You");
+                        ct.output.writeObject(msgPack);
+                        ct.output.flush();
+                        msgPack.setUsername(username);
                     }
                 }
 
@@ -127,11 +111,6 @@ public class ClientThread extends Thread {
         finally {
             closeClient();
         }
-    }
-
-    /** Decrements Current Thread's Index */
-    public void decrementIndex(){
-        id--;
     }
 
     /** Terminate Client Properly closing connections and updating server list */
