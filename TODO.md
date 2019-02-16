@@ -23,6 +23,9 @@
         - Add to README
 
 - **Refactoring**
+    - Re-Organize Threads to be able to communicate with one another
+        - Create Classes in Threads with references to them
+        - Add Synchronized Methods inside these classes for Interthread Communication (using wait, and notify)
     - Re-organize sections and split up main classes, Server and Client, into sub-classes for more readability
     - Have more variables instead of literals in parameters
     - Have main data such as, urls and ports, in a sub-class for easy access
