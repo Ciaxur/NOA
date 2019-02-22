@@ -1,0 +1,33 @@
+{
+    "name": "noa.js",
+    "version": "0.0.1",
+    "description": "Electron.js Based Messenger that can run locally on any machine. Connect securly with encryption for true privacy.",
+    "main": "app.js",
+    "scripts": {
+        "start": "electron ./out/Core/app.js",
+        "watch": "gulp watch:typescript",
+        "clean": "gulp clean:all",
+        "clean-out": "gulp clean:out",
+        "clean-dist": "gulp clean:dist",
+        "build": "gulp build:typescript",
+        "prod": "npm run clean && npm run build && npm start"
+    },
+    "repository": "https://github.com/Ciaxur/NOA",
+    "author": "Omar Omar",
+    "license": "MIT",
+    "private": false,
+    "devDependencies": {
+        "del": "^3.0.0",
+        "gulp": "3.9.1",
+        "gulp-sourcemaps": "^2.6.5",
+        "gulp-typescript": "^5.0.0",
+        "gulp-util": "^3.0.8",
+        "vinyl-buffer": "^1.0.1"
+    },
+    "dependencies": {
+        "@types/jquery": "^3.3.29",
+        "electron": "^4.0.5",
+        "jquery": "^3.3.1",
+        "typescript": "^3.3.3"
+    }
+}

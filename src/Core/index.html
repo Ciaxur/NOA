@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="Styles/chat.css">
+  </head>
+  
+  <body>
+
+    <div class="container">
+
+      <div class="row text-center">
+        <div class="col-sm">
+          <h1>NOA</h1>
+        </div>
+      </div>
+
+      <div class="row text-center">
+        <div class="col-sm">
+            We are using node <script>document.write(process.versions.node)</script>,
+            Chrome <script>document.write(process.versions.chrome)</script>,
+            and Electron <script>document.write(process.versions.electron)</script>.
+        </div>
+      </div>
+
+      
+
+      <!-- Chat Area -->
+      <div class="row text-center">
+
+            <textarea readonly id="chatHistory" cols="30" rows="15"></textarea>
+            <textarea id="chatBox" cols="30" rows="10"></textarea>
+
+        </div>
+      
+    </div>
+    
+    
+  </body>
+
+
+  <script>
+    require("./Preload.js");
+    require("./EventListners.js");
+  </script>
+</html>
