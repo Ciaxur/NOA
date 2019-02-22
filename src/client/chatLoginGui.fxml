@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="300.0" stylesheets="client/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.LoginController">
+   <children>
+      <ToolBar fx:id="titleBar" nodeOrientation="RIGHT_TO_LEFT" prefHeight="31.0" prefWidth="300.0">
+        <items>
+          <Button fx:id="closeButton" maxHeight="29.0" mnemonicParsing="false" onMouseClicked="#closeClicked" prefWidth="29.0" text="×" />
+          <Button fx:id="miniButton" maxHeight="29.0" mnemonicParsing="false" onMouseClicked="#miniClicked" prefWidth="29.0" text="_" />
+        </items>
+          <padding>
+              <Insets />
+          </padding>
+      </ToolBar>
+      <TextField fx:id="usernameText" layoutX="30.0" layoutY="78.0" onKeyPressed="#submitKeyPressed" prefHeight="25.0" prefWidth="240.0" />
+      <Button fx:id="submitButton" layoutX="123.0" layoutY="111.0" mnemonicParsing="false" onMouseClicked="#initSubmit" text="Submit" />
+      <Label fx:id="userLabel" layoutX="30.0" layoutY="55.0" text="Enter your username:" />
+      <Label layoutX="10.0" layoutY="1.0" text="NOA" />
+      <Label fx:id="errorLabel" layoutX="30.0" layoutY="35.0" />
+   </children>
+</AnchorPane>
