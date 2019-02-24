@@ -9,6 +9,31 @@ import { KEYS } from './Constants';
 let isCtrl = false;         // Keeps track of Control Key Down
 
 
+/**
+ * Store message in Message History
+ * Handles Message Send
+ * 
+ * @param msg - String Message to store in Message History and Send
+ */
+function sendMessage(msg): void {
+    // TODO :: Handle Message Send              // Send Message
+
+    // Add msg to Message History
+    addMsgHistory(msg);
+}
+
+/** 
+ * Adds Message to Chat History
+ * 
+ * @param msg - Message to be added to Chat History
+ */
+export function addMsgHistory(msg: String): void {
+    // Store Message in Message History    
+    $("#chatHistory").val($("#chatHistory").val().toString() + msg + '\n');
+}
+
+
+
 /**  Event Listners that handles Keydown */
 $("#chatBox").on("keydown", e => {
     // Variables Used
@@ -22,9 +47,8 @@ $("#chatBox").on("keydown", e => {
 
     // Enter ONLY Clicked
     if (e.which === KEYS.ENTER && !isCtrl) {
-        // TODO :: Handle Message Send              // Send Message
         const msg = chatBox.val().toString().trim();
-        $("#chatHistory").val($("#chatHistory").val() + msg + '\n');
+        sendMessage(msg);
 
 
         // Clear Text Box
@@ -42,4 +66,13 @@ $("#chatBox").on("keydown", e => {
 $("#chatBox").on("keyup", e => {
     // Keep track of Control Key Release
     if (e.which === KEYS.CTRL) { isCtrl = false; }
+});
+
+
+
+/** Handle Port Selection Buttons */
+$(".port-btn-group").on("click", e => {
+    // Obtain and Notify Port Change
+    const PORT = (e.target.innerHTML).trim();
+    sendMessage(`Port Set to ${PORT}`);
 });
