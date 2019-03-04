@@ -4,6 +4,7 @@
 
 import * as $ from 'jquery';
 import { KEYS } from './Constants';
+import { clientNode } from './Postload';
 
 // Global Variables
 let isCtrl = false;         // Keeps track of Control Key Down
@@ -16,7 +17,8 @@ let isCtrl = false;         // Keeps track of Control Key Down
  * @param msg - String Message to store in Message History and Send
  */
 function sendMessage(msg): void {
-    // TODO :: Handle Message Send              // Send Message
+    // Send Message
+    clientNode.sendMessage(msg);
 
     // Add msg to Message History
     addMsgHistory(msg);
@@ -67,7 +69,6 @@ $("#chatBox").on("keyup", e => {
     // Keep track of Control Key Release
     if (e.which === KEYS.CTRL) { isCtrl = false; }
 });
-
 
 
 /** Handle Port Selection Buttons */

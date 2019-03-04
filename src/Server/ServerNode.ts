@@ -1,5 +1,6 @@
 import { createSocket, Socket } from 'dgram';
 import { AddressInfo } from 'net';
+import { SERVER_DATA } from '../Core/Constants';
 
 
 /**
@@ -9,8 +10,8 @@ import { AddressInfo } from 'net';
 export class ServerNode {
     private static instanceNum = 0;             // Make sure only ONE Server per Client
     private server: Socket;                     // Server Socket
-    private PORT: number = 41234;               // Default Port Number
-    private msgCallback;                        // Message Callback | msgCallback( msg: Buffer) : void
+    private PORT = SERVER_DATA.address.port;    // Default Port Number
+    private msgCallback;                        // Message Callback | msgCallback( msg: Buffer, rinfo: AddressInfo) : void
     
 
     /**
@@ -45,7 +46,7 @@ export class ServerNode {
         // Check Server Status
         // Server is On
         try {
-            this.server.close();
+            if (this.server) { this.server.close(); }
         } catch (e) {
             console.log(`Closing Server Error: ${e}`);
         }
@@ -62,7 +63,10 @@ export class ServerNode {
      */
     private initServer() {
         // Create Server Socket
-        this.server = createSocket('udp4');
+        this.server = createSocket({
+            type: 'udp4',
+            reuseAddr: true
+        });
 
         // Server - Error Listener
         this.server.on('error', err => {
@@ -78,7 +82,7 @@ export class ServerNode {
             // TODO :: Interface JSON Object for msgCallback with more data
             //  on user, msg, time, and status, etc...
             if (this.msgCallback != null) {
-                this.msgCallback(msg);
+                this.msgCallback(msg, rinfo);
             }
         });
 

@@ -1,10 +1,19 @@
 /** 
  * Constant Values Declerations
  */
-import { ConstantKeys } from "../Interfaces/Constant_Keys";
+import { ConstantKeys, ServerData } from "../Interfaces/Constant_Keys";
 
 // jQuery Key Values
 export const KEYS: ConstantKeys = {
     CTRL: 17,
     ENTER: 13  
+};
+
+// Server Data
+export const SERVER_DATA: ServerData = {
+    address: {
+        address: "localhost",
+        port: 41234,
+        family: 'IPv4'
+    }
 };

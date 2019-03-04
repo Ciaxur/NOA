@@ -1,5 +1,5 @@
 /** Status Type */
-type Status = "Online" | "Offline" | "Busy" | "Away";
+export type Status = "Online" | "Offline" | "Busy" | "Away";
 
 /** Message Data Structure */
 export interface MessageData {
