@@ -27,6 +27,7 @@
 
 - **Server-Side** Implementations
     - Combine it within the Client
+    - Implement TCP instead of UDP
 
 - **Client-Side** Implementations
     - Fix Crash when no Server Available
