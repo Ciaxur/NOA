@@ -1,8 +1,6 @@
-import { ServerNode } from "../Server/ServerNode";
 import { MessageData, Status } from "../Interfaces/MessageData";
 import { addMsgHistory } from "../Core/EventListners";
-import { Socket, createSocket } from "dgram";
-import { AddressInfo } from "net";
+import { createConnection, Socket } from "net";
 import { SERVER_DATA } from "../Core/Constants";
 import { createHmac, randomBytes } from "crypto";
 
@@ -11,7 +9,6 @@ import { createHmac, randomBytes } from "crypto";
  *  and Client Data Transfers and Incomming.
  */
 export class ClientNode {
-    private SERVER: ServerNode;
     private clientSocket: Socket;
     /** TODO Private Client Data 
      * - Create UID Per Client Node (How will it be unique?)
@@ -27,36 +24,60 @@ export class ClientNode {
 
     /**
      * Initiate Client Side
-     *  - Server Socket Creation
      *  - Client Socket Creation
      */
     constructor() {
-        // Create Server and start Message Callback
-        this.SERVER = new ServerNode((msg: Buffer, rinfo: AddressInfo) => {
-            // Parse Buffer JSON
-            const messageData: MessageData = JSON.parse(msg.toString());
-
-            // Add Message String to Message History
-            // Verify not Self Message
-            if (messageData.UID !== this.UID) {
-                addMsgHistory(messageData.message);
-
-                // Debug Output : Packets
-                console.log('Data Packet Recieved %j', messageData);
-                console.log(`Data from: ${rinfo.address}:${rinfo.port}`);
-            }
+        // Create the Client Socket
+        this.clientSocket = createConnection({
+            host: SERVER_DATA.address.address,
+            port: SERVER_DATA.address.port
         });
 
-        // Make sure Server Created Successfully
-        if (this.SERVER) {
-            // Debug Output
-            console.log("Server Created!");
-        }
+        // Setup Socket Data
+        this.clientSocket.setTimeout(0);        // No Time-Out
 
-        // Debug Output : Server Creation Error
-        else {
-            console.error("Server Failed to be Created!");
-        }
+
+
+        // EVENT LISTENERS
+
+        // Socket Connection Event Listner
+        this.clientSocket.on('connect', () => {
+            console.log('Connection Successful: ', this.clientSocket.address());
+        });
+
+        // Socket Ready Event Listner
+        // this.clientSocket.on('ready', () => {
+        //     this.clientSocket.write(`Hi from Client ${this.UID}`);
+        // });
+
+        // Socket Data Event Listner (Data Received)
+        this.clientSocket.on('data', data => {
+            console.log(`\nClient ${this.UID} Received Data: ${data.toString()}`);
+
+            // Convert Data Buffer into MessageData Object
+            const msgObj: MessageData = JSON.parse(data.toString());
+
+            addMsgHistory(msgObj.message);
+            // socket.end();
+        });
+
+
+        // Socket Close Event Listner
+        this.clientSocket.on('close', err => {
+            if (err) { console.log("Socket Close Error: ", err); }
+            else { console.log("Socket Closing"); }
+        });
+
+        // Socket Error Event Listner
+        this.clientSocket.on('error', err => {
+            console.log("Error Occured: ", err.stack);
+        });
+
+        // Scoket Timeout Event Lister
+        this.clientSocket.on('timeout', () => {
+            console.error("Socket Timed Out!");
+            this.clientSocket.end();
+        });
     }
 
     
@@ -78,25 +99,10 @@ export class ClientNode {
             msgObj = newObj;
         }
 
-        
         // Construct the Message
         const packet = Buffer.from(JSON.stringify(msgObj));
 
-        // Setup Pre-Send Data
-        // Create Client Socket
-        const addr = SERVER_DATA.address;
-        this.clientSocket = createSocket({
-            type: 'udp4',
-            reuseAddr: true
-        });
-        
-        // Send Message | Callback Error
-        this.clientSocket.send(packet, addr.port, addr.address, err => {
-            if (err) { console.log(`Error occurred while sending message: \n${err.stack}`); }
-            else { console.log("Message sent successfully"); }
-
-            // Close Socket when Done :)
-            this.clientSocket.close();
-        });
+        // Send the Packet to Server
+        this.clientSocket.write(packet);
     }
 }

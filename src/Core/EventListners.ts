@@ -17,6 +17,9 @@ let isCtrl = false;         // Keeps track of Control Key Down
  * @param msg - String Message to store in Message History and Send
  */
 function sendMessage(msg): void {
+    // Make sure msg is NOT Empty!
+    if (!msg) { return; }
+    
     // Send Message
     clientNode.sendMessage(msg);
 
