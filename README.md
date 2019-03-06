@@ -4,8 +4,8 @@ A team project to create an Electron.js Based Messenger that can run locally on 
 
 ---
 #### Pre-Requisites
-- `IDE` : **Visual Studio Code**
-- `Package Manager`: **NPM Package Manager**
+- **`IDE`** : Visual Studio Code
+- **`Package Manager`**: NPM Package Manager
 
 Feel free to use any IDE preffered but please adhere to the [Directory Structure](docs/dir_structure.md).
 
