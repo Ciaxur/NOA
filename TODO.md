@@ -4,7 +4,7 @@
     - No Server Message or Workaround
     - Better Chat History (Div tag instead of TextArea)
         - Other User Info (Username, Time Sent)
-        - Auto Scroll to Bottom (Cool New Message Mini-Notification)
+        - Auto Scroll to Bottom (Cool New Message Mini-Notification called **Toast**)
 
 - Add a **changelog** Markdown file *(Maybe)*
     - Holds changes per each new version
