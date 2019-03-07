@@ -3,6 +3,7 @@
  *  app.
  */
 import * as $ from 'jquery';
+import { sideMenuInit} from '../Client/SideMenu';
 
 
 /** 
@@ -13,4 +14,7 @@ import * as $ from 'jquery';
 $(document).ready(e => { 
     // Focus on ChatBox by Default
     document.getElementById("chatBox").focus();
+
+    // Initiate Side Menu
+    sideMenuInit();
 });

@@ -1,0 +1,126 @@
+/* 
+  Color Style Theme
+    #3498DB   (Submenu Hover Highlight)
+    #2980B9   (Menu)
+    #E74C3C   (Menu Buttons)
+    #2C3E50   (Submenu Text)
+    #ECF0F1   (Text)
+*/
+
+
+
+
+/* Menu Styles */
+.menu { /* Main Menu Container */
+    margin-top: 5px;
+    height: 95vh;
+    width: 220px;
+    
+    border-radius: 5px;
+    box-shadow: 4px 3px 4px rgba(55, 90, 125, 0.7);
+    
+    position: absolute;
+  /*   left: 4px; */
+    left: -225px;
+    
+    background-color: #2980B9;
+    z-index: 2;
+}
+.menu-txt-header {
+  margin-top: 10px;
+  
+  font-size: 18px;
+  font-weight: bold;
+  color: #ECF0F1;
+}
+.menu-selections { /* Holds/Handles Sub-Menus */
+  width: 100%;
+  height: 90%;
+  
+/*   background-color: purple; */
+}
+
+/* Menu Button */
+.menu-btn {
+  width: 25px;
+  height: 22px;
+  
+  margin: 10px;
+  margin-top: 15px;
+}
+.menu-btn:hover {
+  transition: transform 200ms;
+  transform: scale(1.1);
+}
+.menu-btn:active {
+  transition: transform 200ms;
+  transform: scale(0.95);
+}
+/* .menu-btn:hover .menu-btn-burger{
+  transition: background-color linear 200ms;
+  background-color: #E80C7A;
+} */
+
+
+.menu-btn-burger {
+  width: 100%;
+  height: 25%;
+  
+  margin-top: 10%;
+  border-radius: 10px;
+  
+  background-color: #E74C3C;
+}
+.menu-btn-burger:first-child {
+  margin-top: 0px;
+}
+
+
+/* Sub Menu Styles */
+.menu-submenu{ /* Sub-Menus Located inside Menu-Selections */
+  width: 100%;
+  height: 20px;
+  
+  border-style: solid;
+  border-width: 2px;
+  border-color: #2980B9;
+  box-sizing: border-box;
+  
+  color: #2C3E50;
+  font-weight: bold;
+  font-size: 12px;
+  
+  margin-top: 5px;
+/*   background-color: #4D566D; */
+  transition: border-color .5s, background-color .2s;
+}
+.menu-submenu:hover {
+  border-color: #3498DB;
+}
+.menu-submenu:active {
+  border-color: #3498DB;
+  background-color: #3498DB;
+}
+
+.menu:hover {
+  cursor: default;
+}
+
+/* Animations */
+@keyframes appearIn {
+  from { opacity: 0 }
+  to { opacity: 1 }
+}
+@keyframes appearOut {
+  from { opacity: 1 }
+  to { opacity: 0 }
+}
+@keyframes menuIn {
+  from { left: -225px; }
+  to { left: 5px; }
+}
+@keyframes menuOut {
+  from { left: 5px; }
+  to { left: -225px; }
+}
+ 

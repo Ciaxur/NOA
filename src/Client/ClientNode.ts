@@ -1,7 +1,7 @@
 import { MessageData, Status } from "../Interfaces/MessageData";
 import { addMsgHistory } from "../Core/EventListners";
 import { createConnection, Socket } from "net";
-import { SERVER_DATA } from "../Core/Constants";
+import { CLIENT_DATA } from "../Core/Constants";
 import { createHmac, randomBytes } from "crypto";
 
 /**
@@ -29,8 +29,8 @@ export class ClientNode {
     constructor() {
         // Create the Client Socket
         this.clientSocket = createConnection({
-            host: SERVER_DATA.address.address,
-            port: SERVER_DATA.address.port
+            host: CLIENT_DATA.address.address,
+            port: CLIENT_DATA.address.port
         });
 
         // Setup Socket Data
