@@ -1,5 +1,11 @@
 ## Upcomming Changes / Plans
 
+- **Client-Side** Implementations
+    - No Server Message or Workaround
+    - Better Chat History (Div tag instead of TextArea)
+        - Other User Info (Username, Time Sent)
+        - Auto Scroll to Bottom (Cool New Message Mini-Notification)
+
 - Add a **changelog** Markdown file *(Maybe)*
     - Holds changes per each new version
 
@@ -26,14 +32,10 @@
     - None So Far...
 
 - **Server-Side** Implementations
-    - Combine it within the Client
-
-- **Client-Side** Implementations
-    - No Server Message or Workaround
 
 - **Later Updates**
-    - Combine Server and Client into a single Instance
-        - Every client is a "mini-server"
+    - 3rd Party Login
+        - Google Account (Used mainly for UID)
     - Implement Continuous Integration Service
         - Most Likely **TravisCl**
 
