@@ -1,10 +1,12 @@
 ## Upcomming Changes / Plans
 
 - **Client-Side** Implementations
-    - No Server Message or Workaround
     - Better Chat History (Div tag instead of TextArea)
         - Other User Info (Username, Time Sent)
         - Auto Scroll to Bottom (Cool New Message Mini-Notification called **Toast**)
+    - No Server Message or Workaround
+    - Add Status Bar
+    - Notifications (Windows, Linux, MacOS)
 
 - Add a **changelog** Markdown file *(Maybe)*
     - Holds changes per each new version
