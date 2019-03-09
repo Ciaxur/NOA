@@ -51,7 +51,7 @@ export function sideMenuInit() {
     
         // Set new Attribute
         menuBtn.elt2.setAttribute("style", newAttrib);
-    }
+    };
   
   
   
@@ -59,18 +59,49 @@ export function sideMenuInit() {
     let toggleStatus = false;   // Stores Toggling Status
 
     // Create a Menu Click Event
-    const menuClick = e => {
+    const menuClick = _ => {
         // Toggle Main Menu On/Off
         toggleStatus = !toggleStatus;
         mainMenu.toggleMenu(toggleStatus);
-        console.log(mainMenu.elt.getAttribute("style"));
     
         // Toggle elt2 Button's Visibility
         menuBtn.toggleElt2(!toggleStatus);
         // menuBtn.elt2.style.visibility = toggleStatus ? "hidden" : "visible";
-    }
+    };
 
     // Assign MenuButton Click Event
     menuBtn.elt1.onclick = menuBtn.elt2.onclick = menuClick;
     menuBtn.elt2.onkeydown = menuBtn.elt1.onkeydown = menuClick;
+
+
+    /* Popluate Side Menu Content */
+    populateSideMenuContent("NOA");
+}
+
+
+/**
+ * Populates Side Menu Content with given
+ *  parameter data
+ * 
+ * @param titleStr - Side Menu text title
+ */
+function populateSideMenuContent(titleStr: string) {
+    // Set Menu Title
+    const menuTitle: Element = document.getElementsByClassName("menu-txt-header")[0];
+    menuTitle.textContent = titleStr;
+
+    // Set Sub Menu Data
+    const menuSelections: Element = document.getElementsByClassName("menu-selections")[0];
+    
+
+
+    // DEBUG - Just to have content in for now ;)
+    const subMs = ["Menu1", "Menu2", "Menu3"];
+
+    for (const m of subMs) {
+        const e = document.createElement('div');        // Create DIV Element
+        e.classList.add("menu-submenu");                // Add Class
+        e.textContent = m;                              // Add Text Content of Menu
+        menuSelections.appendChild(e);                  // Append Menu into the Menu Selection :)
+    }
 }
