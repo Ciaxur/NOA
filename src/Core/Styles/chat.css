@@ -1,9 +1,85 @@
-#chatHistory {
+/* Stack Styling */
+.stackContainer {
+    margin: 0 auto;
+    margin-top: 10px;
+
     width: 100%;
     height: 450px;
-    resize: none;
+
+    vertical-align: bottom;
+
+    background-color: #355C7D;
+}
+.wrapper {
+    display: table-cell;
+    vertical-align: bottom;
+
+    height: inherit;
+    width: 720px;
+}
+.content {
+    overflow: auto;
+    overflow-x: hidden;
+    max-height: 450px;
 }
 
+
+/* Toast Styling */
+.toast {
+    color: #E84A5F;
+
+    border-radius: 12px;
+    box-sizing: border-box;
+
+
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 10px;
+    padding: 2px;
+
+    width: 100%;
+    height: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #FECEA8;
+}
+.toast:hover {
+    transition: background-color 200ms ease-in-out;
+    background-color: #334A5A;
+}
+.toast:active {
+    transition: background-color 200ms ease-in-out;
+    background-color: #0C1824;
+}
+
+
+/* Section Styling */
+.section {
+    width: 100%;
+    min-height: 30px;
+    color: #F0F0DF;
+
+    /*   border-style: solid;
+    border-width: 2px;
+    border-color: #BDD3DE;
+    box-sizing: border-box; */
+
+    margin-top: 5px;
+    margin-left: 0px;
+    padding: 8px;
+
+    background-color: #355C7D;
+}
+.top-section {
+    color: #F67280;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+/* .mid-section {} */
+
+  
+
+/* Chatbox Area Styling */
 #chatBox {
     width: 100%;
     height: 100px;
@@ -11,6 +87,52 @@
 
     margin-top: 10px;
 }
+
+
+/* Scroll Bar Styling */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: #F1F1F1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+
+/* Animation Keyframes */
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes toastExpand {
+  0% {
+    opacity: 0;
+    width: 0%;
+    font-size: 0px;
+  }
+  
+  100% {
+    opacity: 1;
+    width: 100%;
+    font-size: 16px;
+  }
+}
+
+
+/* #chatHistory {
+    width: 100%;
+    height: 450px;
+    resize: none;
+} */
 
 /* .container {
     height: 100%;

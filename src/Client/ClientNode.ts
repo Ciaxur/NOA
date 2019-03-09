@@ -1,8 +1,8 @@
 import { MessageData, Status } from "../Interfaces/MessageData";
-import { addMsgHistory } from "../Core/EventListners";
 import { createConnection, Socket } from "net";
 import { CLIENT_DATA } from "../Core/Constants";
 import { createHmac, randomBytes } from "crypto";
+import { createSection, scrollToBottom } from "./ChatHistory";
 
 /**
  * Client Node Class that handles Sub-Server 
@@ -18,8 +18,8 @@ export class ClientNode {
      * - Username
      * - Status
      */
-    private username: String = "Bobby";
-    private UID: String = createHmac('sha256', randomBytes(4)).digest().toString();    // For now
+    private username = "Bobby";
+    private UID: string = createHmac('sha256', randomBytes(4)).digest().toString();    // For now
     private status: Status = "Online";
 
     /**
@@ -58,7 +58,11 @@ export class ClientNode {
             const msgObj: MessageData = JSON.parse(data.toString());
 
             // Append Message to History
-            addMsgHistory(msgObj.message);
+            createSection(msgObj);
+
+            // TODO : If BrowserWindow is NOT in focus, create a Toast
+            //      notifying user there is a new message
+            scrollToBottom();
         });
 
 
@@ -85,7 +89,7 @@ export class ClientNode {
      * Packs and Sends Message Object to other Client Nodes
      * @param msgObj - MessageData Object | Message String
      */
-    public sendMessage(msgObj: MessageData | String): void {
+    public sendMessage(msgObj: MessageData | string): void {
         // Construct Message Data Object if Message String Input
         if (typeof msgObj === "string") {
             const newObj: MessageData = {
@@ -101,6 +105,10 @@ export class ClientNode {
 
         // Construct the Message
         const packet = Buffer.from(JSON.stringify(msgObj));
+
+
+        // Append Message to History
+        createSection(msgObj);
 
         // Send the Packet to Server
         this.clientSocket.write(packet);

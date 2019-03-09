@@ -5,6 +5,7 @@
 import * as $ from 'jquery';
 import { KEYS } from './Constants';
 import { clientNode } from './Postload';
+import { scrollToBottom } from '../Client/ChatHistory';
 
 // Global Variables
 let isCtrl = false;         // Keeps track of Control Key Down
@@ -23,18 +24,8 @@ function sendMessage(msg): void {
     // Send Message
     clientNode.sendMessage(msg);
 
-    // Add msg to Message History
-    addMsgHistory(msg);
-}
-
-/** 
- * Adds Message to Chat History
- * 
- * @param msg - Message to be added to Chat History
- */
-export function addMsgHistory(msg: String): void {
-    // Store Message in Message History    
-    $("#chatHistory").val($("#chatHistory").val().toString() + msg + '\n');
+    // Scroll to newest Message :)
+    scrollToBottom();
 }
 
 
@@ -71,6 +62,16 @@ $("#chatBox").on("keydown", e => {
 $("#chatBox").on("keyup", e => {
     // Keep track of Control Key Release
     if (e.which === KEYS.CTRL) { isCtrl = false; }
+});
+
+
+/** Window Resize Event */
+$(window).resize(e => {
+    const width = $(".stackContainer").width();
+    
+    // Resize Chat History to Fix
+    $(".wrapper").width(width);
+
 });
 
 

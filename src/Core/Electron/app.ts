@@ -29,4 +29,6 @@ app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') { app.quit(); }
 });
 
-app.on('activate', () => { if (win === null) { createWindow(); } });
+app.on('activate', () => {
+    if (win === null) { createWindow(); }
+});

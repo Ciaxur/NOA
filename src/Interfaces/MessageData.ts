@@ -3,8 +3,8 @@ export type Status = "Online" | "Offline" | "Busy" | "Away";
 
 /** Message Data Structure */
 export interface MessageData {
-    UID:        String;             // Unique ID Per Client
-    message:    String;             // Message Data
-    username:   String;             // Username of Client
-    status:     Status;             // User's Status
+    UID:        string;             // Unique ID Per Client
+    message:    string;             // Message Data
+    username:   string;             // Username of Client
+    status:     string;             // User's Status
 }
