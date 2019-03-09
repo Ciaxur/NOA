@@ -57,8 +57,8 @@ export class ClientNode {
             // Convert Data Buffer into MessageData Object
             const msgObj: MessageData = JSON.parse(data.toString());
 
+            // Append Message to History
             addMsgHistory(msgObj.message);
-            // socket.end();
         });
 
 
