@@ -18,10 +18,10 @@ export const SERVER_DATA: ServerData = {
     }
 };
 
-// Clinet Connection Data
+// Client Connection Data
 export const CLIENT_DATA: ServerData = {
     address: {
-        address: "141.215.215.180",
+        address: "localhost",
         port: 41234,
         family: 'IPv4'
     }
