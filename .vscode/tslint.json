@@ -13,9 +13,9 @@
       ],
       "ban-types": [true,
         ["Object", "Use {} instead."],
-        ["string", "Use 'String' instead."],
-        ["number", "Use 'Number' instead."],
-        ["boolean", "Use 'Boolean' instead."]
+        ["String", "Use 'string' instead."],
+        ["Number", "Use 'number' instead."],
+        ["Boolean", "Use 'boolean' instead."]
       ],
       "class-name": true,
       "curly": true,
