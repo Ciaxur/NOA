@@ -4,7 +4,7 @@
     "description": "Electron.js Based Messenger that can run locally on any machine. Connect securly with encryption for true privacy.",
     "main": "app.js",
     "scripts": {
-        "start": "electron ./out/Core/app.js",
+        "start": "electron ./out/Core/Electron/app.js",
         "start-server": "node ./out/Server/ServerNode.js",
         "watch": "gulp watch:typescript",
         "clean": "gulp clean:all",

@@ -15,7 +15,7 @@ function createWindow() {
     win.setTitle("NOA");
 
     // Load in HTML File
-    win.loadURL(`file://${__dirname}/index.html`);
+    win.loadURL(`file://${__dirname}/../index.html`);
 
     // Browser Window Functionallity
     win.on('closed', () => win = null);
@@ -30,4 +30,3 @@ app.on('window-all-closed', () => {
 });
 
 app.on('activate', () => { if (win === null) { createWindow(); } });
-
