@@ -1,12 +1,21 @@
 ## Upcomming Changes / Plans
 
 - **Client-Side** Implementations
-    - Better Chat History (Div tag instead of TextArea)
-        - Other User Info (Username, Time Sent)
-        - Auto Scroll to Bottom (Cool New Message Mini-Notification called **Toast**)
     - No Server Message or Workaround
+        - Retries after couple seconds
     - Add Status Bar
+        - Show Server Connection Status
     - Notifications (Windows, Linux, MacOS)
+        - If minimized
+
+- **Polishing**
+    - Better message display
+        - Don't display a header for Time and Username if same username sends a message
+        - Display time if major time difference
+    - Chat History Style
+        - Blend the Chat within the entire WindowBrowser
+        - Only Auto Scroll down if user is at the very bottom
+        - Only Auto Scroll down if Window is in **FOCUS**
 
 - Add a **changelog** Markdown file *(Maybe)*
     - Holds changes per each new version
