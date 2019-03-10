@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="Styles/chat.css">
+    <link rel="stylesheet" href="Styles/side-menu.css">
+    <link rel="stylesheet" href="Styles/config.css">
+  </head>
+  
+  <body>
+
+    <!--   Menu Begin -->
+    <div class="menu noselect">
+      
+      <!--     Menu Header -->
+          <div class="row text-center">
+            <div class="col-sm-3">
+              <div class="menu-btn">
+                <div class="menu-btn-burger"></div>
+                <div class="menu-btn-burger"></div>
+                <div class="menu-btn-burger"></div>
+              </div>
+            </div>
+            
+            <div class="col-sm-6 menu-txt-header">
+              <p>PlaceHolder</p>
+            </div>
+          </div>
+          
+          
+      <!--     Side Button -->
+          <div class="menu-btn">
+            <div class="menu-btn-burger"></div>
+            <div class="menu-btn-burger"></div>
+            <div class="menu-btn-burger"></div>
+          </div>
+          
+          
+      <!--     Menu Selections and Sub-Menu -->
+          <div class="menu-selections text-center">
+            <!-- Empty | Handled in CORE -->
+          </div>
+          
+          
+    </div>
+      <!--   Menu End -->
+
+
+
+    <!-- Chat System Begin -->
+    <div class="container">
+
+      <!-- Title Header Area -->
+      <div class="row text-center">
+        <div class="col-sm">
+          <h1>NOA</h1>
+        </div>
+      </div>
+
+      <!-- Node Header Area -->
+      <div class="row text-center">
+        <div class="col-sm-3"></div>
+
+        <div class="col-sm-6">
+            We are using node <script>document.write(process.versions.node)</script>,
+            Chrome <script>document.write(process.versions.chrome)</script>,
+            and Electron <script>document.write(process.versions.electron)</script>.
+        </div>
+        
+        <div class="col-sm-3"></div>
+      </div>
+
+      
+
+      <!-- Chat Area -->
+      <div class="row text-center">
+
+            <!-- <textarea readonly id="chatHistory" cols="30" rows="15"></textarea> -->
+            <div class="stackContainer">
+              <div class="wrapper">
+                <div class="content"></div>
+              </div>
+            </div>
+
+            <textarea id="chatBox" cols="30" rows="10"></textarea>
+
+        </div>
+      
+    </div>
+    <!-- Chat System End -->
+    
+    
+  </body>
+
+
+  <script>
+    require("./Preload.js");
+    require("./EventListners.js");
+    require("./Postload.js");
+  </script>
+</html>
