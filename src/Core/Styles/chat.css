@@ -8,7 +8,7 @@
 
     vertical-align: bottom;
 
-    background-color: #355C7D;
+    background-color: white;
 }
 .wrapper {
     display: table-cell;
@@ -57,7 +57,7 @@
 .section {
     width: 100%;
     min-height: 30px;
-    color: #F0F0DF;
+    color: #0C1824;
 
     /*   border-style: solid;
     border-width: 2px;
@@ -68,10 +68,10 @@
     margin-left: 0px;
     padding: 8px;
 
-    background-color: #355C7D;
+    background-color: white;
 }
 .top-section {
-    color: #F67280;
+    color: #E74C3C;
     font-weight: 500;
     margin-bottom: 5px;
 }
