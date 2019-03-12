@@ -16,7 +16,7 @@ Feel free to use any IDE preffered but please adhere to the [Directory Structure
 ``` bash
 npm install                 # Install Dependencies
 npm run build               # Build NOA Application
-npm run start-server&       # Run Server-Side In Backround
+npm run start-server&       # Run Server-Side In Background
 npm run start&              # Launch a Client Instance
 ```
 
