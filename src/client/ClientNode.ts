@@ -34,7 +34,7 @@ export class ClientNode {
         });
 
         // Setup Socket Data
-        this.clientSocket.setTimeout(0);        // No Time-Out
+        this.clientSocket.setTimeout(5000);        // No Time-Out
 
 
 
