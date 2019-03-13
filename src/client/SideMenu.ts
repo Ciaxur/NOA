@@ -26,7 +26,7 @@ export function sideMenuInit() {
         // );
     
         mainMenu.elt.setAttribute("style",
-            `animation: ${status ? "menuIn" : "menuOut"} 0.5s; left: ${status ? 0 : -(mainMenu.width + 5)}px;`
+            `animation: ${status ? "menuIn" : "menuOut"} 0.5s; left: ${status ? 5 : -(mainMenu.width + 5)}px;`
         );
     };
   

@@ -31,13 +31,15 @@ export function createSection(msgObj: MessageData): void {
         `<!--         Top Bar Section -->
         <div class="row top-section">
           <div class="col-md-4 text-left">
-            ${msgObj.username} <span class="date-mute"> ${getDate()}</span>
+            ${msgObj.username}
           </div>
           
-          <div class="col-md-4 text-center"></div>
+          <div class="col-md-4 text-center">
+            ${getDate()}
+          </div>
           
           <div class="col-md-4 text-right">
-            <!-- Options Area -->
+            Options
           </div>
         </div>
         
