@@ -28,6 +28,18 @@ function sendMessage(msg): void {
     scrollToBottom();
 }
 
+/**
+ * Calculates and adjusts Chat Size to match Window Size
+ */
+function adaptChatSize(): void {
+    // Calculate Data
+    const width = $(".stackContainer").width();
+    const height = $(window).height() - $("#chatBox").height() - 100;
+    
+    // Resize Chat History to Fix
+    $(".wrapper").width(width);
+    $(".stackContainer").height(height);
+}
 
 
 /**  Event Listners that handles Keydown */
@@ -67,13 +79,13 @@ $("#chatBox").on("keyup", e => {
 
 /** Window Resize Event */
 $(window).resize(e => {
-    const width = $(".stackContainer").width();
-    
-    // Resize Chat History to Fix
-    $(".wrapper").width(width);
-
+    // Adapt Chat Size
+    adaptChatSize();
 });
 
+
+/** Window Ready Event */
+$(window).ready(adaptChatSize);
 
 /** Handle Port Selection Buttons */
 $(".port-btn-group").on("click", e => {

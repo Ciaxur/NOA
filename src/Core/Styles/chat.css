@@ -8,7 +8,7 @@
 
     vertical-align: bottom;
 
-    background-color: white;
+    background-color: #FFFFFF;
 }
 .wrapper {
     display: table-cell;
@@ -57,7 +57,7 @@
 .section {
     width: 100%;
     min-height: 30px;
-    color: #0C1824;
+    color: #202529;
 
     /*   border-style: solid;
     border-width: 2px;
@@ -71,13 +71,19 @@
     background-color: white;
 }
 .top-section {
-    color: #E74C3C;
+    color: #202529;
     font-weight: 500;
     margin-bottom: 5px;
 }
 /* .mid-section {} */
 
-  
+
+/* Text Styling */
+.date-mute {
+    color: #20252981;
+    font-size: 12px;
+}
+
 
 /* Chatbox Area Styling */
 #chatBox {
