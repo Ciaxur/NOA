@@ -1,10 +1,13 @@
 ## Upcomming Changes / Plans
 
 - **Client-Side** Implementations
-    - No Server Message or Workaround
-        - Retries after couple seconds
     - Add Status Bar
         - Show Server Connection Status
+        
+    - No Server Message or Workaround
+        - Retries after couple seconds (Using the Timeout Event)
+            - Retry and alert User through the Status Bar
+    
     - Notifications (Windows, Linux, MacOS)
         - If minimized
 
@@ -55,5 +58,4 @@
         - Most Likely **TravisCl**
 
 - **Style Revamp**
-    - Change CSS Style
     - Have multiple Themes Available to choose from
