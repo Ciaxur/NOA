@@ -25,7 +25,7 @@ export function createSection(msgObj: MessageData): void {
     const e = document.createElement("div");
     e.classList.add("section");
     e.setAttribute("style", "animation: fadeIn 500ms;");
-
+    console.log(msgObj.message);
     
     e.innerHTML =
         `<!--         Top Bar Section -->
@@ -44,9 +44,7 @@ export function createSection(msgObj: MessageData): void {
 <!--         Middle Bar Section (Text) -->
         <div class="row mid-section">
           
-          <div class="col-md-12 text-left">
-              ${msgObj.message}
-          </div>
+          <div class="col-md-12 text-left divText">${msgObj.message}</div>
           
         </div>`;
 

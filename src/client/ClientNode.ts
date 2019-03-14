@@ -4,6 +4,10 @@ import { CLIENT_DATA } from "../Core/Constants";
 import { createHmac, randomBytes } from "crypto";
 import { createSection, scrollToBottom } from "./ChatHistory";
 
+
+// Connection Types
+type ConxIcon = "connected" | "disconnected" | "connecting";
+
 /**
  * Client Node Class that handles Sub-Server 
  *  and Client Data Transfers and Incomming.
@@ -21,6 +25,7 @@ export class ClientNode {
     private username = "Bobby";
     private UID: string = createHmac('sha256', randomBytes(4)).digest().toString();    // For now
     private status: Status = "Online";
+    private connectStatus = false;
 
     /**
      * Initiate Client Side
@@ -34,8 +39,7 @@ export class ClientNode {
         });
 
         // Setup Socket Data
-        this.clientSocket.setTimeout(5000);        // No Time-Out
-
+        this.clientSocket.setTimeout(5000);        // 5 Second Timeout
 
 
         // EVENT LISTENERS
@@ -43,6 +47,8 @@ export class ClientNode {
         // Socket Connection Event Listner
         this.clientSocket.on('connect', () => {
             console.log('Connection Successful: ', this.clientSocket.address());
+            this.setConxIcon("connected");
+            this.connectStatus = true;
         });
 
         // Socket Ready Event Listner
@@ -69,7 +75,17 @@ export class ClientNode {
         // Socket Close Event Listner
         this.clientSocket.on('close', err => {
             if (err) { console.log("Socket Close Error: ", err); }
-            else { console.log("Socket Closing"); }
+            else {
+                console.log("Socket Closing");
+
+                // Retry Connection
+                this.connectStatus = false;
+                this.clientSocket.connect({
+                    host: CLIENT_DATA.address.address,
+                    port: CLIENT_DATA.address.port
+                });
+                this.setConxIcon("connecting");
+            }
         });
 
         // Socket Error Event Listner
@@ -79,8 +95,22 @@ export class ClientNode {
 
         // Scoket Timeout Event Lister
         this.clientSocket.on('timeout', () => {
-            console.error("Socket Timed Out!");
-            this.clientSocket.end();
+            // Make Sure no Connection
+            if (!this.connectStatus) {
+                console.error("Socket Timed Out!");
+                this.setConxIcon("disconnected");
+                // this.clientSocket.end();
+
+                // Retry in 2 Seconds
+                setTimeout(() => {
+                    this.clientSocket.connect({
+                        host: CLIENT_DATA.address.address,
+                        port: CLIENT_DATA.address.port
+                    });
+
+                    this.setConxIcon("connecting");
+                }, 2000);
+            }
         });
     }
 
@@ -112,5 +142,30 @@ export class ClientNode {
 
         // Send the Packet to Server
         this.clientSocket.write(packet);
+    }
+
+
+    /**
+     * Sets Connection Icon on the Status Bar
+     * @param status - Status Type
+     */
+    private setConxIcon(status: ConxIcon): void {
+        const img: HTMLImageElement = document.getElementsByClassName('conxIcon')[0] as HTMLImageElement;
+        const dir = "../../resources/Images/Connection/";
+        
+        if (status === "disconnected") {
+            img.src = dir + "No Connection.png";
+            img.title = "No Connection";
+        }
+
+        else if (status === "connected") {
+            img.src = dir + "Connected.png";
+            img.title = "Connection";
+        }
+
+        else if (status === "connecting") {
+            img.src = dir + "Connecting.png";
+            img.title = "Connecting";
+        }
     }
 }

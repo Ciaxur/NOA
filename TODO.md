@@ -1,12 +1,10 @@
 ## Upcomming Changes / Plans
 
 - **Client-Side** Implementations
-    - Add Status Bar
-        - Show Server Connection Status
-        
-    - No Server Message or Workaround
-        - Retries after couple seconds (Using the Timeout Event)
-            - Retry and alert User through the Status Bar
+    - Chat History Server Notification
+        - User Connecting/Disconnecting
+
+    - User Set Username (For now)
     
     - Notifications (Windows, Linux, MacOS)
         - If minimized
