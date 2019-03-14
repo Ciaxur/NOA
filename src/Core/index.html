@@ -3,9 +3,11 @@
   <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="Styles/app.css">
     <link rel="stylesheet" href="Styles/chat.css">
     <link rel="stylesheet" href="Styles/side-menu.css">
     <link rel="stylesheet" href="Styles/config.css">
+    <link rel="stylesheet" href="Styles/statusBar.css">
   </head>
   
   <body>
@@ -58,38 +60,26 @@
         </div>
       </div>
 
-      <!-- Node Header Area -->
-      <div class="row text-center">
-        <div class="col-sm-3"></div>
-
-        <div class="col-sm-6">
-            We are using node <script>document.write(process.versions.node)</script>,
-            Chrome <script>document.write(process.versions.chrome)</script>,
-            and Electron <script>document.write(process.versions.electron)</script>.
-        </div>
-        
-        <div class="col-sm-3"></div>
-      </div>
-
-      
-
-      <!-- Chat Area -->
-      <div class="row text-center">
-
-            <!-- <textarea readonly id="chatHistory" cols="30" rows="15"></textarea> -->
-            <div class="stackContainer">
-              <div class="wrapper">
-                <div class="content"></div>
-              </div>
-            </div>
-
-            <textarea id="chatBox" cols="30" rows="10"></textarea>
-
-        </div>
-      
     </div>
-    <!-- Chat System End -->
+
     
+    <!-- Chat Area -->
+      <div class="stackContainer">
+        <div class="wrapper">
+          <div class="content"></div>
+        </div>
+
+        <textarea id="chatBox" cols="30" rows="10"></textarea>
+      </div>
+    <!-- Chat System End -->
+
+
+    
+    <!-- Status Bar Begin -->
+    <div class="statusBar">
+            <img src="../../resources/Images/Connection/Connecting.png" class="img-fluid float-top conxIcon" title="Connecting">
+    </div>
+    <!-- Status Bar End -->
     
   </body>
 

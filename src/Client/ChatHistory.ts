@@ -25,30 +25,26 @@ export function createSection(msgObj: MessageData): void {
     const e = document.createElement("div");
     e.classList.add("section");
     e.setAttribute("style", "animation: fadeIn 500ms;");
-
+    console.log(msgObj.message);
     
     e.innerHTML =
         `<!--         Top Bar Section -->
         <div class="row top-section">
           <div class="col-md-4 text-left">
-            ${msgObj.username}
+            ${msgObj.username} <span class="date-mute"> ${getDate()}</span>
           </div>
           
-          <div class="col-md-4 text-center">
-            ${getDate()}
-          </div>
+          <div class="col-md-4 text-center"></div>
           
           <div class="col-md-4 text-right">
-            Options
+            <!-- Options Area -->
           </div>
         </div>
         
 <!--         Middle Bar Section (Text) -->
         <div class="row mid-section">
           
-          <div class="col-md-12 text-left">
-              ${msgObj.message}
-          </div>
+          <div class="col-md-12 text-left divText">${msgObj.message}</div>
           
         </div>`;
 

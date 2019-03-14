@@ -1,0 +1,17 @@
+.statusBar {
+    width: 100%;
+    height: 15px;
+    
+    position: absolute;
+    bottom: 0;
+
+    background-color: #F3F3F3;
+}
+
+.conxIcon {
+    height: 15px;
+    width: 15px;
+    
+    right: 0;
+    position: absolute;
+}

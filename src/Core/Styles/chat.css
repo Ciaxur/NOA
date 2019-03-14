@@ -3,12 +3,12 @@
     margin: 0 auto;
     margin-top: 10px;
 
-    width: 100%;
+    width: 90%;
     height: 450px;
 
     vertical-align: bottom;
 
-    background-color: #355C7D;
+    background-color: #FFFFFF;
 }
 .wrapper {
     display: table-cell;
@@ -57,7 +57,7 @@
 .section {
     width: 100%;
     min-height: 30px;
-    color: #F0F0DF;
+    color: #202529;
 
     /*   border-style: solid;
     border-width: 2px;
@@ -68,22 +68,28 @@
     margin-left: 0px;
     padding: 8px;
 
-    background-color: #355C7D;
+    background-color: white;
 }
 .top-section {
-    color: #F67280;
+    color: #202529;
     font-weight: 500;
     margin-bottom: 5px;
 }
 /* .mid-section {} */
 
-  
+
+/* Text Styling */
+.date-mute {
+    color: #20252981;
+    font-size: 12px;
+}
+
 
 /* Chatbox Area Styling */
 #chatBox {
     width: 100%;
     height: 100px;
-    resize: vertical;
+    resize: none;
 
     margin-top: 10px;
 }

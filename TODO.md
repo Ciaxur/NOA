@@ -1,12 +1,17 @@
 ## Upcomming Changes / Plans
 
 - **Client-Side** Implementations
-    - No Server Message or Workaround
-        - Retries after couple seconds
-    - Add Status Bar
-        - Show Server Connection Status
+    - Chat History Server Notification
+        - User Connecting/Disconnecting
+
+    - User Set Username (For now)
+    
     - Notifications (Windows, Linux, MacOS)
         - If minimized
+
+- **Security Vulnerabilities** Fixes
+    - Requries Gulp Update to v4.0.0
+        - So needs Gulp Code to be refactored
 
 - **Polishing**
     - Better message display
@@ -51,5 +56,4 @@
         - Most Likely **TravisCl**
 
 - **Style Revamp**
-    - Change CSS Style
     - Have multiple Themes Available to choose from
