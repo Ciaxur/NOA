@@ -1,9 +1,6 @@
 ## Upcomming Changes / Plans
 
 - **Client-Side** Implementations
-    - Chat History Server Notification
-        - User Connecting/Disconnecting
-
     - User Set Username (For now)
     
     - Notifications (Windows, Linux, MacOS)

@@ -84,6 +84,11 @@
     font-size: 12px;
 }
 
+.notification-mute {
+    font-weight: 700;
+    color: #29282E;
+    font-size: 12px;
+}
 
 /* Chatbox Area Styling */
 #chatBox {

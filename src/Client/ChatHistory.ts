@@ -55,6 +55,27 @@ export function createSection(msgObj: MessageData): void {
     box.appendChild(e);
 }
 
+/**
+ * Creates a Notification Section in Chat History
+ * @param msg - The Notification Message to Display
+ */
+export function createNotificationSection(msg: string): void {
+    const e = document.createElement("div");
+    e.classList.add("section");
+    e.setAttribute("style", "animation: fadeIn 500ms;");
+    
+    e.innerHTML =
+        `<div class="row text-center notification-mute">
+          
+          <div class="col-md-12 divText">${msg}</div>
+          
+        </div>`;
+
+    box.appendChild(e);
+}
+
+
+
 /** 
  * Method that check if Scrolled to Bottom 
  * 

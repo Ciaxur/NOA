@@ -2,7 +2,8 @@ import { MessageData, Status } from "../Interfaces/MessageData";
 import { createConnection, Socket } from "net";
 import { CLIENT_DATA } from "../Core/Constants";
 import { createHmac, randomBytes } from "crypto";
-import { createSection, scrollToBottom } from "./ChatHistory";
+import { createSection, scrollToBottom, createNotificationSection } from "./ChatHistory";
+import { RequestData, InstanceOfRequestData } from "../Interfaces/RequestData";
 
 
 // Connection Types
@@ -61,14 +62,54 @@ export class ClientNode {
             console.log(`\nClient ${this.UID} Received Data: ${data.toString()}`);
 
             // Convert Data Buffer into MessageData Object
-            const msgObj: MessageData = JSON.parse(data.toString());
+            const msgObj: MessageData | RequestData = JSON.parse(data.toString());
+            
+            // Check if Data Request Object
+            if (InstanceOfRequestData(msgObj)) {
+                // Store Response
+                const response = (msgObj as RequestData).response;
+                const responseType = (msgObj as RequestData).responseType;
 
-            // Append Message to History
-            createSection(msgObj);
+                // Check if Response
+                if (response !== null) {
+                    createNotificationSection(`${response} ${ responseType === 'connected' ? 'Connected' : 'Disconnected' }!`);
+                }
+                
+                // Check Request Type
+                else {
+                    // Store Request
+                    const request = (msgObj as RequestData).requestType;
 
-            // TODO : If BrowserWindow is NOT in focus, create a Toast
-            //      notifying user there is a new message
-            scrollToBottom();
+                    // Remove Response
+                    (msgObj as RequestData).requestType = null;
+
+                    // Check what to Do :)
+                    if (request === 'status') {
+                        (msgObj as RequestData).response = this.status;
+                    } else if (request === 'uid') {
+                        (msgObj as RequestData).response = this.UID;
+                    } else if (request === 'username') {
+                        (msgObj as RequestData).response = this.username;
+                        (msgObj as RequestData).responseType = "connected";     // Set Connection Type
+                    }
+
+
+                    // Reply to Server
+                    this.clientSocket.write(Buffer.from(JSON.stringify(msgObj)));
+                }
+            }
+
+
+            // Message Object of Type MessageData
+            else {
+
+                // Append Message to History
+                createSection(msgObj as MessageData);
+
+                // TODO : If BrowserWindow is NOT in focus, create a Toast
+                //      notifying user there is a new message
+                scrollToBottom();
+            }
         });
 
 
