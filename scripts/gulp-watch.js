@@ -11,6 +11,8 @@ const gulp          = gulpCore.gulp;
  *  2 - Watches fro changes in 'src'
  *  3 - Rns 'build:typescript' on change
  */
-gulp.task('watch:typescript', ['build:typescript'], () => {
-    gulp.watch('src/**/*.ts', ['build:typescript']);
-});
+function watch_TS(done) {
+    gulp.watch('src/**/*.ts', gulp.parallel('build:typescript'));
+    done();
+}
+gulp.task('watch:typescript', watch_TS);

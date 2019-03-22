@@ -6,10 +6,6 @@
     - Notifications (Windows, Linux, MacOS)
         - If minimized
 
-- **Security Vulnerabilities** Fixes
-    - Requries Gulp Update to v4.0.0
-        - So needs Gulp Code to be refactored
-
 - **Polishing**
     - Better message display
         - Don't display a header for Time and Username if same username sends a message
@@ -40,9 +36,6 @@
     - Create a new logo
         - Add to NOA
         - Add to README
-
-- **Refactoring**
-    - None So Far...
 
 - **Server-Side** Implementations
 

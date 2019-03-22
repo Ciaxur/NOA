@@ -10,8 +10,10 @@
         "clean": "gulp clean:all",
         "clean-out": "gulp clean:out",
         "clean-dist": "gulp clean:dist",
-        "build": "gulp build:typescript",
-        "prod": "npm run clean && npm run build && npm start"
+        "build-ts": "gulp build:typescript",
+        "build": "gulp build:all",
+        "prod": "npm run clean && npm run build && npm start",
+        "gulp-tasks": "gulp --tasks"
     },
     "repository": "https://github.com/Ciaxur/NOA",
     "author": "Omar Omar",
@@ -19,7 +21,7 @@
     "private": false,
     "devDependencies": {
         "del": "^3.0.0",
-        "gulp": "3.9.1",
+        "gulp": "^4.0.0",
         "gulp-sourcemaps": "^2.6.5",
         "gulp-typescript": "^5.0.0",
         "gulp-util": "^3.0.8",

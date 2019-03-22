@@ -7,18 +7,29 @@ const gulp          = gulpCore.gulp;
 
 
 /** Cleans 'dist' directory */
-gulp.task('clean:dist', () => { 
-    return del(['dist/*']);
-});
+function clean_Dist(done) { 
+    del(['dist/*']);
+
+    done();
+};
 
 /** Cleans 'out' directory */
-gulp.task('clean:out', () => {
-    return del(['out/*']);
-});
+function clean_Out(done) {
+    del(['out/*']);
+    done();
+};
+
+
+// Assign Tasks
+gulp.task('clean:dist', clean_Dist);
+gulp.task('clean:out', clean_Out);
+
 
 /** 
- * Runs ALL Clean Tasks 
+ * Runs ALL Clean Tasks in Parallel
  *  'out' directory cleanup     -> clean:out
  *  'dist' directory cleanup    -> clean:dist
  */
-gulp.task('clean:all', ['clean:dist', 'clean:out']);
+gulp.task('clean:all', gulp.parallel('clean:dist', 'clean:out'));
+
+
