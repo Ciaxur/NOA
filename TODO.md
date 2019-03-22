@@ -1,8 +1,7 @@
-## Upcomming Changes / Plans
+## Upcomming Changes / Plans (Pre Alpha v0.0.4)
 
 - **Client-Side** Implementations
-    - User Set Username (For now)
-    
+    - User Set Username (For now) through Electron Menus
     - Notifications (Windows, Linux, MacOS)
         - If minimized
 
@@ -15,8 +14,9 @@
         - Only Auto Scroll down if user is at the very bottom
         - Only Auto Scroll down if Window is in **FOCUS**
 
-- Add a **changelog** Markdown file *(Maybe)*
+- Add a **changelog** Markdown file
     - Holds changes per each new version
+        - Per Release Add a bunch of Changelog Data on the Version from Previous Version
 
 - Add a **doc** directory for GitHub Pages
 
@@ -24,7 +24,8 @@
 
 - Add a **Contribution** Markdown file to set rules on how to contribute :)
 
-- Add more to the to do list, **TODO** Markdown file
+
+## Upcomming Changes / Plans (Pre Alpha v0.0.5)
 
 - Add more Details to the **README** Markdown file
     - Add images
@@ -37,7 +38,8 @@
         - Add to NOA
         - Add to README
 
-- **Server-Side** Implementations
+
+## Upcomming Changes / Plans (Pre Alpha v0.0.6)
 
 - **Later Updates**
     - 3rd Party Login
