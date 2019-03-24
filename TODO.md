@@ -1,8 +1,8 @@
 ## Upcomming Changes / Plans (Pre Alpha v0.0.4)
 
 - **Development** Implementations
-    - [ ] Add TSLint to be checked using GulpJS while building instead of requiring VSCode to have TSLint installed :)
-    - [ ] Fix Issue where GulpJS Errors from Typescript Compiling not showing Trace
+    - [x] Add TSLint to be checked using GulpJS while building instead of requiring VSCode to have TSLint installed :)
+    - [x] Fix Issue where GulpJS Errors from Typescript Compiling not showing Trace
     - [x] Refactor ChatHistory.ts
         - [x] Abstract Class for ChatHistory
         - [x] Only store Variables ONCE in order to have fewer calls

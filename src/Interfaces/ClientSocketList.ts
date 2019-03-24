@@ -5,6 +5,6 @@ import { Socket } from "net";
  *  on Server Side
  */
 export interface ClientSocketList {
-    socket: Socket,         // Client TCP Socket Object
-    username: string        // Client Username
+    socket: Socket;             // Client TCP Socket Object
+    username: string;           // Client Username
 }

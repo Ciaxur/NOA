@@ -1,8 +1,5 @@
 // Module Imports
-const gulpCore = require('./gulp-core');
-
-// Assign Modules From Gulp-Core
-const gulp          = gulpCore.gulp;
+const gulp = require('gulp');
 
 
 /** 

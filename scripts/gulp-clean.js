@@ -1,9 +1,6 @@
 // Module Imports
-const gulpCore      = require('./gulp-core');
+const gulp          = require('gulp');
 const del           = require('del');
-
-// Assign Modules From Gulp-Core
-const gulp          = gulpCore.gulp;
 
 
 /** Cleans 'dist' directory */
@@ -11,13 +8,13 @@ function clean_Dist(done) {
     del(['dist/*']);
 
     done();
-};
+}
 
 /** Cleans 'out' directory */
 function clean_Out(done) {
     del(['out/*']);
     done();
-};
+}
 
 
 // Assign Tasks
