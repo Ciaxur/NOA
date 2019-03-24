@@ -1,4 +1,5 @@
 import { app, BrowserWindow } from "electron";
+import { initMenus } from './Menus';
 
 let win: BrowserWindow;
 
@@ -20,6 +21,10 @@ function createWindow() {
     // Browser Window Functionallity
     win.on('closed', () => win = null);
     win.once('ready-to-show', () => win.show());
+
+
+    // Initiate Menus
+    initMenus(win);
 }
 
 
