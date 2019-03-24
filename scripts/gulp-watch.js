@@ -12,7 +12,7 @@ const gulp          = gulpCore.gulp;
  *  3 - Rns 'build:typescript' on change
  */
 function watch_TS(done) {
-    gulp.watch('src/**/*.ts', gulp.parallel('build:all'));
+    gulp.watch('src/**/*', gulp.parallel('build:all'));
     done();
 }
 gulp.task('watch:typescript', watch_TS);
