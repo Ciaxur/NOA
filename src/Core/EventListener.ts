@@ -1,10 +1,10 @@
 /**
- * Initiate Document Event Listners
+ * Initiate Document Event Listeners
  */
 
 import * as $ from 'jquery';
 import { KEYS, CLIENT_DATA } from './Constants';
-import { scrollToBottom, createNotificationSection } from '../Client/ChatHistory';
+import { scrollToBottom, createNotificationSection, createToast, isScrollAtBottom } from '../Client/ChatHistory';
 import { ipcRenderer } from 'electron';
 import { MsgStructIPC } from '../Interfaces/MessageData';
 import { ClientNode } from '../Client/ClientNode';
@@ -50,21 +50,44 @@ function adaptChatSize(): void {
  */
 ipcRenderer.on('async-ClientChat', (e, arg: MsgStructIPC) => {
     // Check if Change Username
-    if (arg.from === 'Menus-ChangeName') {
+    if (arg.code === 'chat-user-change' && typeof(arg.message) === 'string') {
         (CLIENT_DATA.node as ClientNode).changeUsername(arg.message);
         createNotificationSection(`Username Changed to, <span style="font-weight:normal">${arg.message}</span>`);
+    }
+
+    // Check if Message Trigger
+    else if (arg.code === 'chat-message-tigger' && typeof(arg.message) === 'object') {
+        // Check & Handle Focused
+        if (arg.message.focused) {
+            scrollToBottom();
+        }
+
+        // Check & Handle Minimized
+        else if (arg.message.minimized) {
+            // Toast Create
+            if (!isScrollAtBottom()) {
+                createToast("New Messages");
+            }
+
+            // Notification Create
+            Notification.requestPermission().then(() => {
+                const _ = new Notification("New Message!", {
+                    body: `New Message from ${typeof(arg.message) === 'object' ? arg.message.message : ''}`
+                });
+            });
+        }
     }
 
     console.log(`Recieved at Client Chat Listener: ${JSON.stringify(arg)}`);
 });
 
 /** Initialize Communication with Main IPC */
-const _: MsgStructIPC = { from: "ClientChat", message: "initial" };
+const _: MsgStructIPC = { from: "ClientChat", code: "initialize", message: null };
 ipcRenderer.send('async-main', _);
 
 
 
-/**  Event Listners that handles Keydown */
+/**  Event Listeners that handles Keydown */
 $("#chatBox").on("keydown", e => {
     // Variables Used
     const chatBox = $("#chatBox");
@@ -92,7 +115,7 @@ $("#chatBox").on("keydown", e => {
     }
 });
 
-/**  Event Listners that handles Keyup */
+/**  Event Listeners that handles Keyup */
 $("#chatBox").on("keyup", e => {
     // Keep track of Control Key Release
     if (e.which === KEYS.CTRL) { isCtrl = false; }

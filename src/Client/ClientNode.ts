@@ -1,9 +1,10 @@
-import { MessageData, Status } from "../Interfaces/MessageData";
+import { MessageData, Status, MsgStructIPC } from "../Interfaces/MessageData";
 import { createConnection, Socket } from "net";
 import { CLIENT_DATA } from "../Core/Constants";
 import { createHmac, randomBytes } from "crypto";
-import { createSection, scrollToBottom, createNotificationSection } from "./ChatHistory";
+import { createSection, createNotificationSection } from "./ChatHistory";
 import { RequestData, InstanceOfRequestData } from "../Interfaces/RequestData";
+import { ipcRenderer } from 'electron';
 
 
 // Connection Types
@@ -15,14 +16,6 @@ type ConxIcon = "connected" | "disconnected" | "connecting";
  */
 export class ClientNode {
     private clientSocket: Socket;
-    /** TODO Private Client Data 
-     * - Create UID Per Client Node (How will it be unique?)
-     *  - Server Side? Unique Username = Hashed UID?
-     *  - UID is used for verifying if self message
-     * 
-     * - Username
-     * - Status
-     */
     private username = "Bobby";
     private UID: string = createHmac('sha256', randomBytes(4)).digest().toString();    // For now
     private status: Status = "Online";
@@ -45,19 +38,19 @@ export class ClientNode {
 
         // EVENT LISTENERS
 
-        // Socket Connection Event Listner
+        // Socket Connection Event Listener
         this.clientSocket.on('connect', () => {
             console.log('Connection Successful: ', this.clientSocket.address());
             this.setConxIcon("connected");
             this.connectStatus = true;
         });
 
-        // Socket Ready Event Listner
+        // Socket Ready Event Listener
         // this.clientSocket.on('ready', () => {
         //     this.clientSocket.write(`Hi from Client ${this.UID}`);
         // });
 
-        // Socket Data Event Listner (Data Received)
+        // Socket Data Event Listener (Data Received)
         this.clientSocket.on('data', data => {
             console.log(`\nClient ${this.UID} Received Data: ${data.toString()}`);
 
@@ -102,18 +95,27 @@ export class ClientNode {
 
             // Message Object of Type MessageData
             else {
-
                 // Append Message to History
                 createSection(msgObj as MessageData);
 
-                // TODO : If BrowserWindow is NOT in focus, create a Toast
-                //      notifying user there is a new message
-                scrollToBottom();
+                // Construct Message Object for IPC Main
+                const packet: MsgStructIPC = {
+                    from: "ClientNode",
+                    code: "chat-message-tigger",
+                    message: {
+                        minimized: null,
+                        focused: null,
+                        message: (msgObj as MessageData).username
+                    }
+                };
+                
+                // Send Packet Trigger to IPC Main
+                ipcRenderer.send('async-main', packet);
             }
         });
 
 
-        // Socket Close Event Listner
+        // Socket Close Event Listener
         this.clientSocket.on('close', err => {
             if (err) { console.log("Socket Close Error: ", err); }
             else {
@@ -129,7 +131,7 @@ export class ClientNode {
             }
         });
 
-        // Socket Error Event Listner
+        // Socket Error Event Listener
         this.clientSocket.on('error', err => {
             console.log("Error Occured: ", err.stack);
         });

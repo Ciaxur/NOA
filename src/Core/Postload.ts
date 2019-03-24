@@ -2,7 +2,7 @@ import { ClientNode } from "../Client/ClientNode";
 import { CLIENT_DATA } from "./Constants";
 
 /** 
- * Preload Script After loading Preload & EventListners
+ * Preload Script After loading Preload & EventListeners
  *  but before Electron
  */
 

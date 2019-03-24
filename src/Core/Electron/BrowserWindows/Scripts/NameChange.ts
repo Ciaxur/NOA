@@ -1,12 +1,12 @@
 import * as $ from 'jquery';
 import { ipcRenderer } from 'electron';
 
-// Initiate EventListner for Button Click
+// Initiate EventListener for Button Click
 $('button').click(e => {
     changeName();
 });
 
-// Initiate EventListner for ENTER Button Click
+// Initiate EventListener for ENTER Button Click
 $('#usernameInput').keyup(e => {
     // ENTER Key Clicked
     if (e.keyCode === 13) {

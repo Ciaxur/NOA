@@ -25,7 +25,6 @@ export function createSection(msgObj: MessageData): void {
     const e = document.createElement("div");
     e.classList.add("section");
     e.setAttribute("style", "animation: fadeIn 500ms;");
-    console.log(msgObj.message);
     
     e.innerHTML =
         `<!--         Top Bar Section -->
@@ -81,7 +80,7 @@ export function createNotificationSection(msg: string): void {
  * 
  * @returns - Boolean on State of Scroll at Bottom
  */
-function isScrollAtBottom(): boolean {
+export function isScrollAtBottom(): boolean {
     const posFromBottom = box.scrollHeight - box.offsetHeight;
     return (posFromBottom > 0 && posFromBottom !== Math.floor(box.scrollTop))
         ? false
@@ -100,7 +99,7 @@ export function scrollToBottom(): void {
  * 
  * @param msg - Message to Apply to Toast
  */
-function createToast(msg: string): void {
+export function createToast(msg: string): void {
     // Make sure only ONE Toast Lives!
     if (isToast()) { return; }
 

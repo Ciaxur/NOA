@@ -2,11 +2,18 @@
 
 - **Development** Implementations
     - [ ] Add TSLint to be checked using GulpJS while building instead of requiring VSCode to have TSLint installed :)
+    - [ ] Fix Issue where GulpJS Errors from Typescript Compiling not showing Trace
+    - [ ] Refactor ChatHistory.ts
+        - [ ] Abstract Class for ChatHistory
+        - [ ] Only store Variables ONCE in order to have fewer calls
+    - [ ] Refactor EventListener.ts
+        - [ ] Abstract Class for EventListener
 
 - **Client-Side** Implementations
     - [x] User Set Username (For now) through Electron Menus
-    - [ ] Notifications (Windows, Linux, MacOS)
-        - If minimized
+    - [x] Notifications (Windows, Linux, MacOS)
+        - [x] Notification for when Window is Minimized
+        - [x] Notification for when Window is not in Focus
 
 - **Polishing**
     - [ ] Better message display
@@ -38,17 +45,29 @@
 
 - **Aesthetics**
     - [ ] Create a new logo
+        - [ ] Add to Push Notification
         - [ ] Add to NOA
         - [ ] Add to README
 
 
 ## Upcomming Changes / Plans (Pre Alpha v0.0.6)
 
-- **Later Updates**
+- **Client-Side** Implementations
+    - [ ] Status Changes
+        - [ ] Manual Change
+        - [ ] Auto Change
     - [ ] 3rd Party Login
         - [ ] Google Account (Used mainly for UID)
+
+- **Develpment** Implementations
     - [ ] Implement Continuous Integration Service
         - [ ] Most Likely **TravisCl**
 
 - **Style Revamp**
     - [ ] Have multiple Themes Available to choose from
+
+
+## Upcomming Changes / Plans (Notes...Later)
+- Tray Icon
+- Notification Sounds
+- Better Interactive Notifications (for Mac OS)

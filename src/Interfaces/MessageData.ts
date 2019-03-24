@@ -9,8 +9,17 @@ export interface MessageData {
     status:     string;             // User's Status
 }
 
+
+/** Code Type */
+type IPC_Code = "initialize" | "chat-message-tigger" | "chat-user-change";
+
 /** IPC Communication Structure */
 export interface MsgStructIPC {
     from:       string;             // From which IPC Recieved
-    message:    string;             // Message Contained
+    code:       IPC_Code;           // Code for IPC to Check
+    message: string | {             // String or Object
+        minimized: boolean;         // Window's Minimized State
+        focused: boolean;           // Window's Focus State
+        message?: string;           // Extra Message Text
+    };             // Message Contained
 }

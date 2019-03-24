@@ -52,6 +52,7 @@ export function initMainMenu(win: BrowserWindow): void {
                                 // Construct Object
                                 const packet: MsgStructIPC = {
                                     from: "Menus-ChangeName",
+                                    code: "chat-user-change",
                                     message: arg
                                 };
                                 

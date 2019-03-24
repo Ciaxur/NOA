@@ -169,9 +169,9 @@ class ServerNode {
         
 
 
-        // EVENT LISTNERS
+        // EVENT LISTENERS
 
-        // New Connection Event Listner
+        // New Connection Event Listener
         this.server.on('connection', socket => {
             // Output Msg for New Connection
             console.log("New Connection from: ", socket.address());
@@ -196,7 +196,7 @@ class ServerNode {
             });
         });
 
-        // Error Event Listner
+        // Error Event Listener
         this.server.on('error', err => {
             console.error('Error Ocurred in Server: ', err.stack);
             
