@@ -155,6 +155,15 @@ export class ClientNode {
         });
     }
 
+
+    /**
+     * Sets a new Username to Client Node
+     * 
+     * @param newName - New Username
+     */
+    public changeUsername(newName: string): void {
+        this.username = newName;
+    }
     
     /**
      * Packs and Sends Message Object to other Client Nodes

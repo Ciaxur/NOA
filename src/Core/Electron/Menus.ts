@@ -1,14 +1,18 @@
-import { openDevTools } from 'electron-debug';
-import { Menu, BrowserWindow, app } from 'electron';
+import { openDevTools, refresh } from 'electron-debug';
+import { Menu, BrowserWindow, app, ipcMain } from 'electron';
+import { WindowTools } from './Tools/WindowTools';
+import { ipcChannels } from './app';
+import { MsgStructIPC } from '../../Interfaces/MessageData';
 
 
 /**
  * Initiates Menus & SubMenus for main Electron Window app
  * @param win - Main Electron Browser Window
  */
-export function initMenus(win: BrowserWindow): void {
+export function initMainMenu(win: BrowserWindow): void {
     // Create Menu
     const menu = Menu.buildFromTemplate([
+        // File Menu
         {
             label: '&File',
             submenu: [
@@ -20,6 +24,59 @@ export function initMenus(win: BrowserWindow): void {
             ],
         },
 
+        // Edit Menu
+        {
+            label: "&Edit",
+            submenu: [
+                // Change Username
+                {
+                    label: "&Change Username",
+                    click() {
+                        // Create the Browser Window as a Child of Parent
+                        //  of type Modal and not Menus
+                        let _ = WindowTools.createSimpleWindow({
+                            width: 400,
+                            height: 200,
+                            parent: win,
+                            modal: true,
+                            resizable: false,
+                            show: false
+                        }, `file://${__dirname}/BrowserWindows/ChangeUsername.html`, w => w.setMenu(null), false);
+
+                        // Setup Events Manually
+                        _.once('ready-to-show', e => {
+                            _.show();   // Show the Window
+                            
+                            // Setup IPC Main to listen from Render ONCE
+                            ipcMain.once('async-ChangeName', (e, arg) => {
+                                // Construct Object
+                                const packet: MsgStructIPC = {
+                                    from: "Menus-ChangeName",
+                                    message: arg
+                                };
+                                
+                                // Ping it to ClientChat Listener
+                                ipcChannels["ClientChat"].sender.send('async-ClientChat', packet);
+
+                                // Close Window
+                                _.close();
+                            });
+                        });
+
+                        _.on('closed', e => _ = null);
+                    }
+                },
+
+                // Reload Window
+                {
+                    label: "Reload Window",
+                    accelerator: "CmdOrCtrl+R",
+                    click() { refresh(); }
+                }
+            ]
+        },
+
+        // View Menu
         {
             label: '&View',
             submenu: [
@@ -30,28 +87,11 @@ export function initMenus(win: BrowserWindow): void {
                     click() {
                         openDevTools(win);
                     }
-                },
-
-                {
-                    label: "Change Username",
-                    click() {
-                        /**
-                         * TODO: Use, 'createSimpleWindow(size, URL, initMenuFn?)'
-                         *  that creates a simple Window when needed. Also have it return
-                         *  the BrowserWindow to add ipc to communicate with ipcRender
-                         *  in order to change the Username ;)
-                         * 
-                         * Also create an HTML for it as well! Be organized
-                         *  Create a Directory under Electron called 'BrowserWindows'
-                         *  and under that, 'ChangeName', which contains an object that 
-                         *  handles the creation/destruction of that browser and call it here :)
-                         */
-                    }
                 }
             ]
         }
     ]);
 
-    // Set Menu to app
-    Menu.setApplicationMenu(menu);
+    // Set Menu to Window
+    win.setMenu(menu);
 }

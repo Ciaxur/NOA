@@ -24,5 +24,6 @@ export const CLIENT_DATA: ServerData = {
         address: "localhost",
         port: 41234,
         family: 'IPv4'
-    }
+    },
+    node: null            // Store up Client Node
 };

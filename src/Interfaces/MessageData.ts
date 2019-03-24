@@ -8,3 +8,9 @@ export interface MessageData {
     username:   string;             // Username of Client
     status:     string;             // User's Status
 }
+
+/** IPC Communication Structure */
+export interface MsgStructIPC {
+    from:       string;             // From which IPC Recieved
+    message:    string;             // Message Contained
+}

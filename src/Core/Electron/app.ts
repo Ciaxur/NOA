@@ -1,9 +1,10 @@
-import { app, BrowserWindow } from "electron";
-import { initMenus } from './Menus';
+import { app, BrowserWindow, ipcMain } from "electron";
+import { initMainMenu } from './Menus';
+import { MsgStructIPC } from "../../Interfaces/MessageData";
 
 let win: BrowserWindow;
 
-
+/** Create Main App */
 function createWindow() {
     // Create Browser Window
     win = new BrowserWindow({
@@ -24,10 +25,10 @@ function createWindow() {
 
 
     // Initiate Menus
-    initMenus(win);
+    initMainMenu(win);
 }
 
-
+/** Assign Main Application Events */
 app.on('ready', createWindow);
 
 app.on('window-all-closed', () => {
@@ -36,4 +37,24 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
     if (win === null) { createWindow(); }
+});
+
+
+
+/** Structure Saving IPC Communication */
+export const ipcChannels = {};            // Key/Pair Channels (Used for Lookup)
+
+
+/** Initiate IPC Communication from Main */
+ipcMain.on('async-main', (e, arg: MsgStructIPC) => {
+    // Store IPC Communcation
+    if (arg.message === 'initial') {
+        // Make sure it hasn't been stored before
+        //  store Channel for later use
+        if (ipcChannels[arg.from] === undefined) {
+            ipcChannels[arg.from] = e;
+        }
+    }
+    
+    console.log(`Async-Main Received: ${JSON.stringify(arg)}`);
 });

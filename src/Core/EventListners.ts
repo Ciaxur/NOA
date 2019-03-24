@@ -3,9 +3,11 @@
  */
 
 import * as $ from 'jquery';
-import { KEYS } from './Constants';
-import { clientNode } from './Postload';
-import { scrollToBottom } from '../Client/ChatHistory';
+import { KEYS, CLIENT_DATA } from './Constants';
+import { scrollToBottom, createNotificationSection } from '../Client/ChatHistory';
+import { ipcRenderer } from 'electron';
+import { MsgStructIPC } from '../Interfaces/MessageData';
+import { ClientNode } from '../Client/ClientNode';
 
 // Global Variables
 let isCtrl = false;         // Keeps track of Control Key Down
@@ -22,7 +24,7 @@ function sendMessage(msg): void {
     if (!msg) { return; }
     
     // Send Message
-    clientNode.sendMessage(msg);
+    CLIENT_DATA.node.sendMessage(msg);
 
     // Scroll to newest Message :)
     scrollToBottom();
@@ -40,6 +42,26 @@ function adaptChatSize(): void {
     $(".wrapper").width(width);
     $(".stackContainer").height(height);
 }
+
+
+/** 
+ * Electron IPC Render Event Listeners 
+ *  Client Chat Listener
+ */
+ipcRenderer.on('async-ClientChat', (e, arg: MsgStructIPC) => {
+    // Check if Change Username
+    if (arg.from === 'Menus-ChangeName') {
+        (CLIENT_DATA.node as ClientNode).changeUsername(arg.message);
+        createNotificationSection(`Username Changed to, <span style="font-weight:normal">${arg.message}</span>`);
+    }
+
+    console.log(`Recieved at Client Chat Listener: ${JSON.stringify(arg)}`);
+});
+
+/** Initialize Communication with Main IPC */
+const _: MsgStructIPC = { from: "ClientChat", message: "initial" };
+ipcRenderer.send('async-main', _);
+
 
 
 /**  Event Listners that handles Keydown */

@@ -4,10 +4,10 @@ type connectType = 'connected' | 'disconnected';
 
 /** Request Data Structure */
 export interface RequestData {
-    requestType:    RequestType,        // Requested Data
-    response:       string,             // Responded Data
-    responseType:   connectType         // Response Type
-};
+    requestType:    RequestType;        // Requested Data
+    response:       string;             // Responded Data
+    responseType:   connectType;         // Response Type
+}
 
 
 /**
