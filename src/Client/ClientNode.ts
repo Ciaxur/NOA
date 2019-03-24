@@ -2,7 +2,7 @@ import { MessageData, Status, MsgStructIPC } from "../Interfaces/MessageData";
 import { createConnection, Socket } from "net";
 import { CLIENT_DATA } from "../Core/Constants";
 import { createHmac, randomBytes } from "crypto";
-import { createSection, createNotificationSection } from "./ChatHistory";
+import { ChatHistory } from "./ChatHistory";
 import { RequestData, InstanceOfRequestData } from "../Interfaces/RequestData";
 import { ipcRenderer } from 'electron';
 
@@ -65,7 +65,7 @@ export class ClientNode {
 
                 // Check if Response
                 if (response !== null) {
-                    createNotificationSection(`${response} ${ responseType === 'connected' ? 'Connected' : 'Disconnected' }!`);
+                    ChatHistory.createNotificationSection(`${response} ${ responseType === 'connected' ? 'Connected' : 'Disconnected' }!`);
                 }
                 
                 // Check Request Type
@@ -96,7 +96,7 @@ export class ClientNode {
             // Message Object of Type MessageData
             else {
                 // Append Message to History
-                createSection(msgObj as MessageData);
+                ChatHistory.createSection(msgObj as MessageData);
 
                 // Construct Message Object for IPC Main
                 const packet: MsgStructIPC = {
@@ -190,7 +190,7 @@ export class ClientNode {
 
 
         // Append Message to History
-        createSection(msgObj);
+        ChatHistory.createSection(msgObj);
 
         // Send the Packet to Server
         this.clientSocket.write(packet);
