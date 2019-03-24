@@ -1,5 +1,8 @@
 ## Upcomming Changes / Plans (Pre Alpha v0.0.4)
 
+- **Development** Implementations
+    - Add TSLint to be checked using GulpJS while building instead of requiring VSCode to have TSLint installed :)
+
 - **Client-Side** Implementations
     - User Set Username (For now) through Electron Menus
     - Notifications (Windows, Linux, MacOS)
