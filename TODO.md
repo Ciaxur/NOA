@@ -3,11 +3,11 @@
 - **Development** Implementations
     - [ ] Add TSLint to be checked using GulpJS while building instead of requiring VSCode to have TSLint installed :)
     - [ ] Fix Issue where GulpJS Errors from Typescript Compiling not showing Trace
-    - [ ] Refactor ChatHistory.ts
-        - [ ] Abstract Class for ChatHistory
-        - [ ] Only store Variables ONCE in order to have fewer calls
-    - [ ] Refactor EventListener.ts
-        - [ ] Abstract Class for EventListener
+    - [x] Refactor ChatHistory.ts
+        - [x] Abstract Class for ChatHistory
+        - [x] Only store Variables ONCE in order to have fewer calls
+    - [x] Refactor EventListener.ts
+        - [x] ~~Abstract~~ Class for EventListener
 
 - **Client-Side** Implementations
     - [x] User Set Username (For now) through Electron Menus
