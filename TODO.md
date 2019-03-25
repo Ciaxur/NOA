@@ -24,15 +24,16 @@
         - [ ] Only Auto Scroll down if user is at the very bottom
         - [ ] Only Auto Scroll down if Window is in **FOCUS**
 
-- [ ] Add a **changelog** Markdown file
-    - [ ] Holds changes per each new version
-        - [ ] Per Release Add a bunch of Changelog Data on the Version from Previous Version
+- **GitHub**
+    - [ ] Add a **changelog** Markdown file
+        - [ ] Holds changes per each new version
+            - Each Version has realeased as the changes associated with it but removed from To-Do List Markdown. So moved from To-Do List into Changlog :)
 
-- [ ] Add a **doc** directory for GitHub Pages
-
-- [ ] Add a **documentation** Markdown file to explain APIs(In thy future...), how to use, what its uses are, etc...
-
-- [ ] Add a **Contribution** Markdown file to set rules on how to contribute :)
+- **Wiki**
+    - [x] Initiate Wiki Page for Documentation and Contribution
+    - [x] Add **Recommended VSCode Extensions** 
+    - [x] Add a **documentation** Section to explain APIs(In thy future...), how to use, what its uses are, etc...
+    - [ ] Add a **Contribution** Section to set rules on how to contribute :)
 
 
 ## Upcomming Changes / Plans (Pre Alpha v0.0.5)
