@@ -16,13 +16,13 @@
         - [x] Notification for when Window is not in Focus
 
 - **Polishing**
-    - [ ] Better message display
-        - [ ] Don't display a header for Time and Username if same username sends a message
-        - [ ] Display time if major time difference
-    - [ ] Chat History Style
-        - [ ] Blend the Chat within the entire WindowBrowser
-        - [ ] Only Auto Scroll down if user is at the very bottom
-        - [ ] Only Auto Scroll down if Window is in **FOCUS**
+    - [x] Better message display
+        - [x] Don't display a header for Time and Username if same username sends a message
+        - [x] Display time if major time difference
+    - [x] Chat History Style
+        - [x] Blend the Chat within the entire WindowBrowser
+        - [x] Only Auto Scroll down if user is at the very bottom
+        - [x] Only Auto Scroll down if Window is in **FOCUS**
 
 - **GitHub**
     - [ ] Add a **changelog** Markdown file

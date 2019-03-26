@@ -119,7 +119,16 @@ export class EventListener {
             else if (arg.code === 'chat-message-tigger' && typeof(arg.message) === 'object') {
                 // Check & Handle Focused
                 if (arg.message.focused) {
-                    ChatHistory.scrollToBottom();
+                    // Only Scroll if user is at Bottom
+                    if (ChatHistory.isScrollAtBottom()) { ChatHistory.scrollToBottom(); }
+                }
+
+                // Create a Toast if NOT Focused
+                else if (!arg.message.focused) {
+                    // Toast Create
+                    if (!ChatHistory.isScrollAtBottom()) {
+                        ChatHistory.createToast("New Messages");
+                    }
                 }
 
                 // Check & Handle Minimized
