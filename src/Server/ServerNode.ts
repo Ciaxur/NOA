@@ -1,5 +1,7 @@
 import { createServer, Server, Socket } from 'net';
 import { SERVER_DATA } from '../Core/Constants';
+import { RequestData, InstanceOfRequestData } from '../Interfaces/RequestData';
+import { ClientSocketList } from '../Interfaces/ClientSocketList';
 
 
 /**
@@ -12,7 +14,7 @@ class ServerNode {
     private PORT = SERVER_DATA.address.port;    // Default Port Number
 
     // Server-Client Data
-    private clientList: Socket[];               // List of all Connected Client Sockets
+    private clientList: ClientSocketList[];     // List of all Connected Client Sockets
     private MAX_CONX = 5;                       // Limit Maximum Connection (Default for now is 5)
     
     
@@ -63,7 +65,7 @@ class ServerNode {
      */
     private removeClient(client: Socket): void {
         for (let i = 0; i < this.clientList.length; i++) {
-            if (this.clientList[i] === client) {
+            if (this.clientList[i].socket === client) {
                 this.clientList.splice(i, 1);
             }
         }
@@ -77,10 +79,40 @@ class ServerNode {
      */
     private broadcast(data: Buffer, sender: Socket) {
         for (const client of this.clientList) {
-            if (client !== sender) {
-                client.write(data);
+            if (client.socket !== sender) {
+                client.socket.write(data);
             }
         }
+    }
+    
+
+    /**
+     * Requests User Data from a given Client Socket
+     * 
+     * @param user - Client Socket to Request from
+     * @param dataRequested - Data Request from Client
+     */
+    private requestUserData(user: Socket, dataRequested: RequestData): void {
+        // Pack up Data Request Object
+        const packet = Buffer.from(JSON.stringify(dataRequested));
+
+        // Write Data Packet to Client Socket
+        user.write(packet);
+    }
+
+    /**
+     * @returns The Index in the Client List of given Client (Returns -1 if not found)
+     */
+    private indexOfClientSocket(clientSocket: Socket): number {
+        // Search for Client in the list
+        for (let i = 0; i < this.clientList.length; i++) {
+            if (this.clientList[i].socket === clientSocket) {
+                return i;   // Return found Index
+            }
+        }
+
+        // Return not found :(
+        return -1;
     }
     
 
@@ -94,6 +126,18 @@ class ServerNode {
             clientSocket.on('end', () => {
                 console.log("Client Disconnected!", clientSocket.address());
 
+                // Broadcast to Users that Client Disconnected :(
+                const index = this.indexOfClientSocket(clientSocket);
+                const packet: RequestData = {
+                    requestType: null,
+                    response: this.clientList[index].username,
+                    responseType: 'disconnected'
+                };
+
+                // Pack up Data and Broadcast it
+                this.broadcast(Buffer.from(JSON.stringify(packet)), clientSocket);
+
+
                 // Remove Client from ClientList
                 this.removeClient(clientSocket);
             });
@@ -101,6 +145,19 @@ class ServerNode {
             // On Data Received from Client to Server
             clientSocket.on('data', data => {
                 console.log("Server Received Data: ", data.toString());
+
+                // Check if Response Data Object
+                const obj = JSON.parse(data.toString());
+                if (InstanceOfRequestData(obj)) {
+                    const responseObj: RequestData = obj;
+                    
+                    // Check Response Type
+                    if (responseObj.responseType === 'connected') {
+                        // Find Index and Store Username ;)
+                        const index = this.indexOfClientSocket(clientSocket);
+                        this.clientList[index].username = responseObj.response;
+                    }
+                }
 
                 // Broadcast Data to other Connected Clients
                 this.broadcast(data, clientSocket);
@@ -112,15 +169,22 @@ class ServerNode {
         
 
 
-        // EVENT LISTNERS
+        // EVENT LISTENERS
 
-        // New Connection Event Listner
+        // New Connection Event Listener
         this.server.on('connection', socket => {
             // Output Msg for New Connection
             console.log("New Connection from: ", socket.address());
 
             // Store Client
-            this.clientList.push(socket);
+            this.clientList.push({ socket, username: null });
+
+            // Request Client MessageData (For Username and ID Verification)
+            this.requestUserData(socket, {
+                requestType: "username",
+                response: null,
+                responseType: null
+            });
 
             // Output Total Connections
             this.server.getConnections((err, count) => {
@@ -132,7 +196,7 @@ class ServerNode {
             });
         });
 
-        // Error Event Listner
+        // Error Event Listener
         this.server.on('error', err => {
             console.error('Error Ocurred in Server: ', err.stack);
             

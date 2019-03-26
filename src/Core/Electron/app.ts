@@ -1,8 +1,10 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain, Notification } from "electron";
+import { initMainMenu } from './Menus';
+import { MsgStructIPC } from "../../Interfaces/MessageData";
 
 let win: BrowserWindow;
 
-
+/** Create Main App */
 function createWindow() {
     // Create Browser Window
     win = new BrowserWindow({
@@ -20,10 +22,14 @@ function createWindow() {
     // Browser Window Functionallity
     win.on('closed', () => win = null);
     win.once('ready-to-show', () => win.show());
+
+
+    // Initiate Menus
+    initMainMenu(win);
 }
 
-
-app.on('ready', createWindow);
+/** Assign Main Application Events */
+app.on('ready', createWindow) ;
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') { app.quit(); }
@@ -31,4 +37,59 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
     if (win === null) { createWindow(); }
+});
+
+/**
+ * On Windows 10, Need to pin "node_modules/electron/dist/electron.exe"
+ *  to Start and the following method needs to be executed to see Notifications
+ */
+app.setAppUserModelId(process.execPath);
+
+
+
+/** Structure Saving IPC Communication */
+export const ipcChannels = {};            // Key/Pair Channels (Used for Lookup)
+
+
+/** Initiate IPC Communication from Main */
+ipcMain.on('async-main', (e, arg: MsgStructIPC) => {
+    // Store IPC Communcation
+    if (arg.code === 'initialize') {
+        // Make sure it hasn't been stored before
+        //  store Channel for later use
+        if (ipcChannels[arg.from] === undefined) {
+            ipcChannels[arg.from] = e;
+        }
+    }
+
+    // Check if Chat Message Trigger
+    else if (arg.code === 'chat-message-tigger') {
+        // Set Main Window Status in Object
+        let msg = null;
+        if (typeof (arg.message) === 'object') {
+            msg = arg.message.message;
+        }
+
+        arg.message = {
+            focused: win.isFocused(),
+            minimized: win.isMinimized(),
+            message: msg
+        };
+
+
+        // Flash Frame in Taskbar
+        if (!arg.message.focused || arg.message.minimized) {
+            win.flashFrame(true);
+            win.once('focus', () => win.flashFrame(false));
+        }
+
+        
+        // Send data to Client Chat
+        ipcChannels["ClientChat"].sender.send('async-ClientChat', arg);
+    }
+
+
+    
+    // DEBUG
+    console.log(`Async-Main Received: ${JSON.stringify(arg)}`);
 });

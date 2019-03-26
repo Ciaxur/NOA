@@ -1,8 +1,10 @@
-import { MessageData, Status } from "../Interfaces/MessageData";
+import { MessageData, Status, MsgStructIPC } from "../Interfaces/MessageData";
 import { createConnection, Socket } from "net";
 import { CLIENT_DATA } from "../Core/Constants";
 import { createHmac, randomBytes } from "crypto";
-import { createSection, scrollToBottom } from "./ChatHistory";
+import { ChatHistory } from "./ChatHistory";
+import { RequestData, InstanceOfRequestData } from "../Interfaces/RequestData";
+import { ipcRenderer } from 'electron';
 
 
 // Connection Types
@@ -14,14 +16,6 @@ type ConxIcon = "connected" | "disconnected" | "connecting";
  */
 export class ClientNode {
     private clientSocket: Socket;
-    /** TODO Private Client Data 
-     * - Create UID Per Client Node (How will it be unique?)
-     *  - Server Side? Unique Username = Hashed UID?
-     *  - UID is used for verifying if self message
-     * 
-     * - Username
-     * - Status
-     */
     private username = "Bobby";
     private UID: string = createHmac('sha256', randomBytes(4)).digest().toString();    // For now
     private status: Status = "Online";
@@ -44,35 +38,84 @@ export class ClientNode {
 
         // EVENT LISTENERS
 
-        // Socket Connection Event Listner
+        // Socket Connection Event Listener
         this.clientSocket.on('connect', () => {
             console.log('Connection Successful: ', this.clientSocket.address());
             this.setConxIcon("connected");
             this.connectStatus = true;
         });
 
-        // Socket Ready Event Listner
+        // Socket Ready Event Listener
         // this.clientSocket.on('ready', () => {
         //     this.clientSocket.write(`Hi from Client ${this.UID}`);
         // });
 
-        // Socket Data Event Listner (Data Received)
+        // Socket Data Event Listener (Data Received)
         this.clientSocket.on('data', data => {
             console.log(`\nClient ${this.UID} Received Data: ${data.toString()}`);
 
             // Convert Data Buffer into MessageData Object
-            const msgObj: MessageData = JSON.parse(data.toString());
+            const msgObj: MessageData | RequestData = JSON.parse(data.toString());
+            
+            // Check if Data Request Object
+            if (InstanceOfRequestData(msgObj)) {
+                // Store Response
+                const response = (msgObj as RequestData).response;
+                const responseType = (msgObj as RequestData).responseType;
 
-            // Append Message to History
-            createSection(msgObj);
+                // Check if Response
+                if (response !== null) {
+                    ChatHistory.createNotificationSection(`${response} ${ responseType === 'connected' ? 'Connected' : 'Disconnected' }!`);
+                }
+                
+                // Check Request Type
+                else {
+                    // Store Request
+                    const request = (msgObj as RequestData).requestType;
 
-            // TODO : If BrowserWindow is NOT in focus, create a Toast
-            //      notifying user there is a new message
-            scrollToBottom();
+                    // Remove Response
+                    (msgObj as RequestData).requestType = null;
+
+                    // Check what to Do :)
+                    if (request === 'status') {
+                        (msgObj as RequestData).response = this.status;
+                    } else if (request === 'uid') {
+                        (msgObj as RequestData).response = this.UID;
+                    } else if (request === 'username') {
+                        (msgObj as RequestData).response = this.username;
+                        (msgObj as RequestData).responseType = "connected";     // Set Connection Type
+                    }
+
+
+                    // Reply to Server
+                    this.clientSocket.write(Buffer.from(JSON.stringify(msgObj)));
+                }
+            }
+
+
+            // Message Object of Type MessageData
+            else {
+                // Append Message to History
+                ChatHistory.createSection(msgObj as MessageData);
+
+                // Construct Message Object for IPC Main
+                const packet: MsgStructIPC = {
+                    from: "ClientNode",
+                    code: "chat-message-tigger",
+                    message: {
+                        minimized: null,
+                        focused: null,
+                        message: (msgObj as MessageData).username
+                    }
+                };
+                
+                // Send Packet Trigger to IPC Main
+                ipcRenderer.send('async-main', packet);
+            }
         });
 
 
-        // Socket Close Event Listner
+        // Socket Close Event Listener
         this.clientSocket.on('close', err => {
             if (err) { console.log("Socket Close Error: ", err); }
             else {
@@ -88,7 +131,7 @@ export class ClientNode {
             }
         });
 
-        // Socket Error Event Listner
+        // Socket Error Event Listener
         this.clientSocket.on('error', err => {
             console.log("Error Occured: ", err.stack);
         });
@@ -114,6 +157,15 @@ export class ClientNode {
         });
     }
 
+
+    /**
+     * Sets a new Username to Client Node
+     * 
+     * @param newName - New Username
+     */
+    public changeUsername(newName: string): void {
+        this.username = newName;
+    }
     
     /**
      * Packs and Sends Message Object to other Client Nodes
@@ -138,7 +190,7 @@ export class ClientNode {
 
 
         // Append Message to History
-        createSection(msgObj);
+        ChatHistory.createSection(msgObj);
 
         // Send the Packet to Server
         this.clientSocket.write(packet);
