@@ -9,6 +9,10 @@ import { MessageData } from "../Interfaces/MessageData";
 export abstract class ChatHistory {
     // Private Static Variables
     private static box: HTMLElement = document.getElementsByClassName("content")[0] as HTMLElement;
+    private static prevMsgObj: MessageData = null;                  // Keep Track of Previous Data
+    private static lastMessageTime = -1;                            // Keeps track of the time the Last Message was received (in milliseconds)
+    private static lastMessageTimeMsTimeout = (5)*(60*1000);        // Time in milliseconds to account for unless Top Bar is shown (Set to 5 Minutes) => (min)*(sec * ms)
+    private static isBottomBeforeSectionCreate: boolean = null;     // Backup for isScrollAtBottom function, since some events are asynchronous so syncronous events happen prior :)
 
     /**
      * Mimics a Constructor Method
@@ -33,23 +37,31 @@ export abstract class ChatHistory {
      * @param msgObj - Message Object to Append to Section Data
      */
     public static createSection(msgObj: MessageData): void {
+        // Initiate Document Element
         const e = document.createElement("div");
         e.classList.add("section");
         e.setAttribute("style", "animation: fadeIn 500ms;");
+
         
+        // Create HTML Text
         e.innerHTML =
-            `<!--         Top Bar Section -->
-            <div class="row top-section">
-            <div class="col-md-4 text-left">
-                ${msgObj.username} <span class="date-mute"> ${this.getDate()}</span>
-            </div>
-            
-            <div class="col-md-4 text-center"></div>
-            
-            <div class="col-md-4 text-right">
-                <!-- Options Area -->
-            </div>
-            </div>
+            `${
+                // Check Previous Message to decide if Top Section should be inserted
+                // Check if Timeout Reached
+            (this.prevMsgObj && msgObj.UID === this.prevMsgObj.UID) && !(this.lastMessageTime !== -1 && Date.now() - this.lastMessageTime >= this.lastMessageTimeMsTimeout) ? ''
+            : `<!--         Top Bar Section -->
+                <div class="row top-section">
+                    <div class="col-md-4 text-left">
+                        ${msgObj.username} <span class="date-mute"> ${this.getDate()}</span>
+                    </div>
+                    
+                    <div class="col-md-4 text-center"></div>
+                    
+                    <div class="col-md-4 text-right">
+                        <!-- Options Area -->
+                    </div>
+                </div>`
+            }
             
     <!--         Middle Bar Section (Text) -->
             <div class="row mid-section">
@@ -59,9 +71,15 @@ export abstract class ChatHistory {
             </div>`;
 
 
+        // Keep track of Previous Message Object
+        // Keep track of last message recieved TIME
+        this.prevMsgObj = msgObj;
+        this.lastMessageTime = Date.now();
 
+        // Keep a Backup of State
+        this.isBottomBeforeSectionCreate = this.isScrollAtBottom();
 
-
+        // Append to Chat History Box
         this.box.appendChild(e);
     }
 
@@ -90,6 +108,14 @@ export abstract class ChatHistory {
      * @returns - Boolean on State of Scroll at Bottom
      */
     public static isScrollAtBottom(): boolean {
+        // Check if Backup was Created
+        if (this.isBottomBeforeSectionCreate !== null) {
+            const temp = this.isBottomBeforeSectionCreate;
+            this.isBottomBeforeSectionCreate = null;
+            return temp;
+        }
+        
+        // Check Scroll Status
         const posFromBottom = this.box.scrollHeight - this.box.offsetHeight;
         return (posFromBottom > 0 && posFromBottom !== Math.floor(this.box.scrollTop))
             ? false
