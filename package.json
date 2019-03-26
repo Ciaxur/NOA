@@ -1,6 +1,6 @@
 {
     "name": "noa.js",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "Electron.js Based Messenger that can run locally on any machine. Connect securly with encryption for true privacy.",
     "main": "app.js",
     "scripts": {
