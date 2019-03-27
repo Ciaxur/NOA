@@ -2,7 +2,7 @@
 
 - **GitHub**
     - [ ] Add more Details to the **README** Markdown file
-        - [ ] Add images
+        - [x] Add images
         - [ ] Integrated Status Bars
         - [x] Add instructions
         - [ ] ~~Add more **docs** file (Better Organized)~~
@@ -12,7 +12,7 @@
     - [ ] Create a new logo
         - [ ] Add to Push Notification
         - [ ] Add to NOA
-        - [ ] Add to README
+        - [x] Add to README
 
 - **Client-Side** Implementations
     - [ ] Status Changes

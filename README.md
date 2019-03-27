@@ -1,5 +1,9 @@
 # NOA.js (Pre-Alpha v0.0.5)
 
+<p align="center">
+    <img src="./docs/NOA-Logo.svg" width=800>
+</p>
+
 A team project to create an Electron.js Based Messenger that can run locally on any machine. 
 A Messenger that can connect securely with encryption to allow for true privacy. 
 This project is **NOT** yet complete, so all the features such as Encryption, is **NOT** 
