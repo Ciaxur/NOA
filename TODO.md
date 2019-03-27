@@ -4,8 +4,9 @@
     - [ ] Add more Details to the **README** Markdown file
         - [ ] Add images
         - [ ] Integrated Status Bars
-        - [ ] Add instructions
-        - [ ] Add more **docs** file (Better Organized)
+        - [x] Add instructions
+        - [ ] ~~Add more **docs** file (Better Organized)~~
+        - [x] Add to **Wiki**
 
 - **Aesthetics**
     - [ ] Create a new logo
@@ -25,7 +26,7 @@
 
 - **Develpment** Implementations
     - [ ] Implement Continuous Integration Service
-        - [ ] Most Likely **TravisCl**
+        - [ ] Implement **TravisCI**
 
 - **Style Revamp**
     - [ ] Have multiple Themes Available to choose from
