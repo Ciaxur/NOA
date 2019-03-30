@@ -1,4 +1,5 @@
 {
     "tslint.configFile": ".vscode/tslint.json",
-    "jshint.config": ".vscode/.jshintrc"
+    "eslint.enable": true,
+    "eslint.autoFixOnSave": true,
 }

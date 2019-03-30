@@ -1,5 +1,8 @@
 ## Upcomming Changes / Plans (Pre Alpha v0.0.5)
 
+- **Development** Implementations
+    - [x] Transition to ESLint instead of JSHint
+
 - **GitHub**
     - [ ] Add more Details to the **README** Markdown file
         - [x] Add images
@@ -24,9 +27,6 @@
         - [ ] Create a Foudnation for Settings Window
     - [ ] Add more functionality to the Electron Menu
 
-- **Develpment** Implementations
-    - [ ] Implement Continuous Integration Service
-        - [ ] Implement **TravisCI**
 
 - **Style Revamp**
     - [ ] Have multiple Themes Available to choose from
@@ -39,3 +39,6 @@
 - Better Interactive Notifications (for Mac OS)
 - Code of conduct
 - Pull request template
+- Implement Continuous Integration Service
+    - Implement **TravisCI**
+    - When we have testable Functions and Data
