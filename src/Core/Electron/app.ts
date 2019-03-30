@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, Notification } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
 import { initMainMenu } from './Menus';
 import { MsgStructIPC } from "../../Interfaces/MessageData";
 
@@ -22,6 +22,17 @@ function createWindow() {
     // Browser Window Functionallity
     win.on('closed', () => win = null);
     win.once('ready-to-show', () => win.show());
+    win.on('focus', () => {
+        // Construct Message
+        const obj: MsgStructIPC = {
+            code: 'browserwindow-change',
+            from: 'win-event-focus',
+            message: "focused"
+        };
+        
+        // Send data to Client Chat
+        ipcChannels["ClientChat"].sender.send('async-ClientChat', obj);
+    });
 
 
     // Initiate Menus

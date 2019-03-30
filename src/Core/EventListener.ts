@@ -12,7 +12,8 @@ import { ClientNode } from '../Client/ClientNode';
  */
 export class EventListener {
     // Private Variables
-    private isCtrl = false;            // Keeps track of CTRL Key being Held Down
+    private isCtrl = false;             // Keeps track of CTRL Key being Held Down
+    private chatBox: HTMLElement;       // Stores Message Box Element
 
 
     /**
@@ -146,9 +147,20 @@ export class EventListener {
                         const _ = new Notification("New Message!", {
                             body: `New Message from ${typeof(arg.message) === 'object' ? arg.message.message : ''}`
                         });
+                        console.log("Notification Triggered!");
                     });
                 }
             }
+
+            // Check if Browser Window Change
+            else if (arg.code === 'browserwindow-change' && typeof(arg.message) === 'string') {
+                // Broswer Came in Focus
+                if (arg.message === 'focused') {
+                    this.focusOnMsgBox();           // Focus on Message Box :)
+                }
+
+            }
+
 
             console.log(`Recieved at Client Chat Listener: ${JSON.stringify(arg)}`);
         });
@@ -160,5 +172,13 @@ export class EventListener {
         
         // For Chaining
         return this;
+    }
+
+    /**
+     * Focuses on Chat Message Box
+     */
+    private focusOnMsgBox(): void {
+        // Focus on ChatBox by Default
+        document.getElementById("chatBox").focus();
     }
 }
