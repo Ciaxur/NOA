@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain } from "electron";
 import { initMainMenu } from './Menus';
 import { MsgStructIPC } from "../../Interfaces/MessageData";
+import * as path from 'path';
 
 let win: BrowserWindow;
 
@@ -10,7 +11,8 @@ function createWindow() {
     win = new BrowserWindow({
         width: 800,
         height: 740,
-        show: false
+        show: false,
+        icon: path.join(__dirname, '../../../resources/Core/favicon.ico')
     });
 
     // Set Window Ttile

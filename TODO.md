@@ -4,9 +4,9 @@
     - [x] Transition to ESLint instead of JSHint
 
 - **GitHub**
-    - [ ] Add more Details to the **README** Markdown file
+    - [x] Add more Details to the **README** Markdown file
         - [x] Add images
-        - [ ] Integrated Status Bars
+        - [ ] ~~Integrated Status Bars~~
         - [x] Add instructions
         - [ ] ~~Add more **docs** file (Better Organized)~~
         - [x] Add to **Wiki**
@@ -14,7 +14,7 @@
 - **Aesthetics**
     - [x] Create a new logo
         - [x] Add to Push Notification
-        - [ ] Add to NOA
+        - [x] Add to NOA
         - [x] Add to README
 
 - **Client-Side** Implementations
@@ -41,4 +41,5 @@
 - Pull request template
 - Implement Continuous Integration Service
     - Implement **TravisCI**
+    - Add Integrated Status Bar for Integrated Services
     - When we have testable Functions and Data
