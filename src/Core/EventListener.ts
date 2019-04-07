@@ -12,8 +12,9 @@ import { ClientNode } from '../Client/ClientNode';
  */
 export class EventListener {
     // Private Variables
-    private isCtrl = false;             // Keeps track of CTRL Key being Held Down
-    private chatBox: HTMLElement;       // Stores Message Box Element
+    private isCtrl = false;                    // Keeps track of CTRL Key being Held Down
+    private chatBox: HTMLElement;              // Stores Message Box Element
+    private notificationRequested = false;     // Keep track of HTML5 Notification Request
 
 
     /**
@@ -136,19 +137,47 @@ export class EventListener {
                 }
 
                 // Check & Handle Minimized
-                else if (arg.message.minimized) {
+                if (arg.message.minimized) {
                     // Toast Create
                     if (!ChatHistory.isScrollAtBottom()) {
                         ChatHistory.createToast("New Message!");
                     }
 
                     // Notification Create
-                    Notification.requestPermission().then(() => {
-                        const _ = new Notification("New Message!", {
-                            body: `New Message from ${typeof(arg.message) === 'object' ? arg.message.message : ''}`
+                    // Only Create if not requested yet
+                    if (!this.notificationRequested) {
+                        Notification.requestPermission().then(() => {
+                            // Create Notirfication & Initiate
+                            const _ = new Notification("New Message!", {
+                                body: `New Message from ${typeof (arg.message) === 'object' ? arg.message.message : ''}`,
+                                icon: '../../resources/Core/favicon.png'
+                            });
+
+                            // Keep track of notification request status
+                            this.notificationRequested = true;
+
+                            // Set an On Close Event (When user or os closes Notification)
+                            _.onclose = e => {
+                                // Reset Notification Status
+                                this.notificationRequested = false;
+                            };
+
+                            // Set an On Click Event
+                            _.onclick = () => {
+                                const packet: MsgStructIPC = {
+                                    code: "browserwindow-change",
+                                    from: 'ClientChat',
+                                    message: "browserwindow-focus"
+                                };
+
+                                // Prompt Main to Focus Window
+                                ipcRenderer.send('async-main', packet);
+                            
+                                // Remove Notification Request (Prevent Spamming)
+                                this.notificationRequested = false;
+                            };
                         });
-                        console.log("Notification Triggered!");
-                    });
+                    }
                 }
             }
 
