@@ -99,6 +99,16 @@ ipcMain.on('async-main', (e, arg: MsgStructIPC) => {
         ipcChannels["ClientChat"].sender.send('async-ClientChat', arg);
     }
 
+    // Check if Broswer Window Manipulation
+    else if (arg.code === 'browserwindow-change') {
+        // Message of type String
+        if (typeof (arg.message) === 'string') {
+            if (arg.message === 'browserwindow-focus') {        // Set Main Browser Window to Focus
+                win.focus();
+            }
+        }
+    }
+
 
     
     // DEBUG

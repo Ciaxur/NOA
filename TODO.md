@@ -12,8 +12,8 @@
         - [x] Add to **Wiki**
 
 - **Aesthetics**
-    - [ ] Create a new logo
-        - [ ] Add to Push Notification
+    - [x] Create a new logo
+        - [x] Add to Push Notification
         - [ ] Add to NOA
         - [x] Add to README
 
