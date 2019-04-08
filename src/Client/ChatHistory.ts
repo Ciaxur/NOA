@@ -105,11 +105,12 @@ export abstract class ChatHistory {
     /** 
      * Method that check if Scrolled to Bottom 
      * 
+     * @param checkTemp - (Optional) Checks if Temporary Scroll State (For Async Purposes)
      * @returns - Boolean on State of Scroll at Bottom
      */
-    public static isScrollAtBottom(): boolean {
+    public static isScrollAtBottom(checkTemp?: boolean): boolean {
         // Check if Backup was Created
-        if (this.isBottomBeforeSectionCreate !== null) {
+        if (checkTemp && this.isBottomBeforeSectionCreate !== null) {
             const temp = this.isBottomBeforeSectionCreate;
             this.isBottomBeforeSectionCreate = null;
             return temp;

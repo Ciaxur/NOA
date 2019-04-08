@@ -122,7 +122,7 @@ export class EventListener {
                 // Check & Handle Focused
                 if (arg.message.focused) {
                     // Only Scroll if user is at Bottom
-                    if (ChatHistory.isScrollAtBottom()) { ChatHistory.scrollToBottom(); }
+                    if (ChatHistory.isScrollAtBottom(true)) { ChatHistory.scrollToBottom(); }
 
                     // Create a Toast to Notify user has a new Message waiting
                     else { ChatHistory.createToast("New Message!"); }
