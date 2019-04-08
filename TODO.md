@@ -19,6 +19,7 @@
 
 - **Client-Side** Implementations
     - [ ] Status Changes
+        - [ ] Different Status Affects Notifications
         - [ ] Manual Change
         - [ ] Auto Change
     - [ ] 3rd Party Login
@@ -34,10 +35,12 @@
 
 
 ## Upcomming Changes / Plans (Notes...Later)
+- Add Friend's List
+    - Show Online Status
 - Tray Icon
 - Notification Sounds
 - Better Interactive Notifications (for Mac OS)
-- Code of conduct
+- ~~Code of conduct~~ *Did this in master*
 - Pull request template
 - Implement Continuous Integration Service
     - Implement **TravisCI**
