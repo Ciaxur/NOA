@@ -11,7 +11,7 @@ export interface MessageData {
 
 
 /** Code Type */
-type IPC_Code = "initialize" | "chat-message-tigger" | "chat-user-change" | "browserwindow-change";
+type IPC_Code = "initialize" | "chat-message-tigger" | "chat-user-change" | "chat-status-change" | "browserwindow-change";
 
 /** IPC Communication Structure */
 export interface MsgStructIPC {
@@ -20,6 +20,7 @@ export interface MsgStructIPC {
     message: string | {             // String or Object
         minimized: boolean;         // Window's Minimized State
         focused: boolean;           // Window's Focus State
+        status: Status;
         message?: string;           // Extra Message Text
     };             // Message Contained
 }

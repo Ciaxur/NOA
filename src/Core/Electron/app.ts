@@ -35,6 +35,17 @@ function createWindow() {
         // Send data to Client Chat
         ipcChannels["ClientChat"].sender.send('async-ClientChat', obj);
     });
+    win.on('minimize', () => {
+        // Construct Packet
+        const packet: MsgStructIPC = {
+            code: "browserwindow-change",
+            from: "win-minimize",
+            message: "minimized"
+        };
+        
+        // Notify Client Chat
+        ipcChannels["ClientChat"].sender.send('async-ClientChat', packet);
+    });
 
 
     // Initiate Menus
@@ -86,12 +97,16 @@ ipcMain.on('async-main', (e, arg: MsgStructIPC) => {
         arg.message = {
             focused: win.isFocused(),
             minimized: win.isMinimized(),
+            status: (arg.message as any).status,
             message: msg
         };
 
 
         // Flash Frame in Taskbar
-        if (!arg.message.focused || arg.message.minimized) {
+        // Only Flash if Online or Away
+        // No Flash if Busy
+        if ((!arg.message.focused            || arg.message.minimized) &&
+            (arg.message.status === "Online" || arg.message.status === "Away")) {
             win.flashFrame(true);
             win.once('focus', () => win.flashFrame(false));
         }

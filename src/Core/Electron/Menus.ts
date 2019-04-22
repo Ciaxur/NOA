@@ -2,7 +2,7 @@ import { openDevTools, refresh } from 'electron-debug';
 import { Menu, BrowserWindow, app, ipcMain } from 'electron';
 import { WindowTools } from './Tools/WindowTools';
 import { ipcChannels } from './app';
-import { MsgStructIPC } from '../../Interfaces/MessageData';
+import { MsgStructIPC, Status } from '../../Interfaces/MessageData';
 
 
 /**
@@ -30,7 +30,7 @@ export function initMainMenu(win: BrowserWindow): void {
             submenu: [
                 // Change Username
                 {
-                    label: "&Change Username",
+                    label: "Change &Username",
                     click() {
                         // Create the Browser Window as a Child of Parent
                         //  of type Modal and not Menus
@@ -68,6 +68,45 @@ export function initMainMenu(win: BrowserWindow): void {
                     }
                 },
 
+                // Change Status
+                {
+                    label: "Change &Status",
+                    submenu: [
+                        // Status->Online
+                        {
+                            label: "Onine",
+                            type: "radio",
+                            checked: true,
+                            click() {
+                                // Change Status
+                                changeNodeStatus("Online");
+                            }
+                        },
+
+                        // Status->Busy
+                        {
+                            label: "Busy",
+                            type: "radio",
+                            checked: false,
+                            click() {
+                                // Change Status
+                                changeNodeStatus("Busy");
+                            }
+                        },
+
+                        // Status->Away
+                        {
+                            label: "Away",
+                            type: "radio",
+                            checked: false,
+                            click() {
+                                // Change Status
+                                changeNodeStatus("Away");
+                            }
+                        }
+                    ]
+                },
+
                 // Reload Window
                 {
                     label: "Reload Window",
@@ -95,4 +134,21 @@ export function initMainMenu(win: BrowserWindow): void {
 
     // Set Menu to Window
     win.setMenu(menu);
+}
+
+
+/**
+ * Sends IPC to Client to prompt Status Change
+ * @param newStatus - Status to change to
+ */
+function changeNodeStatus(newStatus: Status): void {
+    // Construct Packet
+    const packet: MsgStructIPC = {
+        from: "Menus-ChangeStatus",
+        code: "chat-status-change",
+        message: newStatus
+    };
+    
+    // Ping it to ClientChat Listener
+    ipcChannels["ClientChat"].sender.send('async-ClientChat', packet);
 }

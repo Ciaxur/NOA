@@ -11,4 +11,5 @@ export interface ConstantKeys {
 export interface ServerData {
     address: AddressInfo;   // HOST/PORT/FAMILY(IPv4/IPv6)
     node?: any;             // Node Type Hooked to Data
+    timeout: number;        // Client BrowserWindow Away/Busy Timeout in Background (Or Timout Value in General)
 }

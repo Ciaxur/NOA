@@ -15,7 +15,8 @@ export const SERVER_DATA: ServerData = {
         address: "localhost",
         port: 41234,
         family: 'IPv4'
-    }
+    },
+    timeout: null
 };
 
 // Client Connection Data
@@ -25,5 +26,6 @@ export const CLIENT_DATA: ServerData = {
         port: 41234,
         family: 'IPv4'
     },
-    node: null            // Store up Client Node
+    node: null,             // Store up Client Node
+    timeout: 300000         // 5min Timout
 };

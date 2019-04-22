@@ -105,6 +105,7 @@ export class ClientNode {
                     message: {
                         minimized: null,
                         focused: null,
+                        status: this.status,
                         message: (msgObj as MessageData).username
                     }
                 };
@@ -196,6 +197,21 @@ export class ClientNode {
         this.clientSocket.write(packet);
     }
 
+    /**
+     * Sets Client Node's New Status
+     * @param newStatus - New Client Status
+     */
+    public setStatus(newStatus: Status): void {
+        this.status = newStatus;
+    }
+
+    /**
+     * Sets Client Node's New Status
+     * @returns Client's Status
+     */
+    public getStatus(): Status {
+        return this.status;
+    }
 
     /**
      * Sets Connection Icon on the Status Bar
