@@ -2,7 +2,7 @@ import * as $ from 'jquery';
 import { KEYS, CLIENT_DATA } from './Constants';
 import { ChatHistory } from '../Client/ChatHistory';
 import { ipcRenderer } from 'electron';
-import { MsgStructIPC } from '../Interfaces/MessageData';
+import { MsgStructIPC, Status } from '../Interfaces/MessageData';
 import { ClientNode } from '../Client/ClientNode';
 
 /**
@@ -12,9 +12,11 @@ import { ClientNode } from '../Client/ClientNode';
  */
 export class EventListener {
     // Private Variables
-    private isCtrl = false;                    // Keeps track of CTRL Key being Held Down
-    private chatBox: HTMLElement;              // Stores Message Box Element
-    private notificationRequested = false;     // Keep track of HTML5 Notification Request
+    private isCtrl = false;                     // Keeps track of CTRL Key being Held Down
+    private chatBox: HTMLElement;               // Stores Message Box Element
+    private notificationRequested = false;      // Keep track of HTML5 Notification Request
+    private clientTimeout;                      // Keeps track of BrowserWindow being in background (without use) | Holds Timeout Event
+    private clientStatusAutoset = false;        // Keeps track of whether client's status was changed due to timeout
 
 
     /**
@@ -117,6 +119,12 @@ export class EventListener {
                 ChatHistory.createNotificationSection(`Username Changed to, <span style="font-weight:normal">${arg.message}</span>`);
             }
 
+            // Check if Change Status
+            else if (arg.code === 'chat-status-change' && typeof (arg.message) === 'string') {
+                // Change Status according to massage
+                (CLIENT_DATA.node as ClientNode).setStatus(arg.message as Status);
+            }
+
             // Check if Message Trigger
             else if (arg.code === 'chat-message-tigger' && typeof(arg.message) === 'object') {
                 // Check & Handle Focused
@@ -137,7 +145,8 @@ export class EventListener {
                 }
 
                 // Check & Handle Minimized
-                if (arg.message.minimized) {
+                // Only Notify if user is Online
+                if (arg.message.minimized && arg.message.status === "Online") {
                     // Toast Create
                     if (!ChatHistory.isScrollAtBottom()) {
                         ChatHistory.createToast("New Message!");
@@ -185,9 +194,41 @@ export class EventListener {
             else if (arg.code === 'browserwindow-change' && typeof(arg.message) === 'string') {
                 // Broswer Came in Focus
                 if (arg.message === 'focused') {
-                    this.focusOnMsgBox();           // Focus on Message Box :)
+                    // Focus on Message Box :)
+                    this.focusOnMsgBox();
+
+                    // Clear Timout
+                    if (this.clientTimeout) {
+                        window.clearTimeout(this.clientTimeout);
+                        this.clientTimeout = null;
+                    }
+
+                    // Check if Client's Status was changed
+                    //  due to timeout
+                    else if (this.clientStatusAutoset) {
+                        this.clientStatusAutoset = false;
+                        (CLIENT_DATA.node as ClientNode).setStatus("Online");
+                        console.log("Status set to: Online"); // DEBUG
+                    }
                 }
 
+                // Browser Became Minimized
+                else if (arg.message === 'minimized') {
+                    // Make sure User didn't manually set Status (Basically Online)
+                    if (!this.clientTimeout && (CLIENT_DATA.node as ClientNode).getStatus() === "Online") {
+                        // Set Client Timout
+                        this.clientTimeout = setTimeout(() => {
+                            // Set Client as Away
+                            // Set that Status was Autoset
+                            (CLIENT_DATA.node as ClientNode).setStatus('Away');
+                            this.clientStatusAutoset = true;
+                            console.log("Status set to: Away"); // DEBUG
+
+                            // Remove SetTimoutID
+                            this.clientTimeout = null;
+                        }, CLIENT_DATA.timeout);
+                    }
+                }
             }
 
 

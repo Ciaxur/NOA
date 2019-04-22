@@ -18,10 +18,17 @@
         - [x] Add to README
 
 - **Client-Side** Implementations
-    - [ ] Status Changes
-        - [ ] Different Status Affects Notifications
-        - [ ] Manual Change
-        - [ ] Auto Change
+    - [x] Status Changes
+        - [x] Different Status Affects Notifications
+            - Tile Flash if Online or Away
+            - Notification only if Online
+        - [x] Manual Change
+        - [x] Auto Change
+            - Status changes only if User's Status was online and Window was Minimized for 5 minutes
+    - [ ] Add Friends List
+        - [ ] Displays Status
+        - [ ] Displays Username
+        - [ ] Displays Part of their UID (Grayed out)
     - [ ] 3rd Party Login
         - [ ] Google Account (Used mainly for UID)
     - [ ] Settings Options (File > Settings)
