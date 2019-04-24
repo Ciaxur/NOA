@@ -3,29 +3,41 @@ import { createConnection, Socket } from "net";
 import { CLIENT_DATA } from "../Core/Constants";
 import { createHmac, randomBytes } from "crypto";
 import { ChatHistory } from "./ChatHistory";
-import { RequestData, InstanceOfRequestData } from "../Interfaces/RequestData";
+import { RequestData, InstanceOfRequestData, ResponseType } from "../Interfaces/RequestData";
 import { ipcRenderer } from 'electron';
 
 
 // Connection Types
 type ConxIcon = "connected" | "disconnected" | "connecting";
 
+
+/**
+ * Client Class that holds Basic Client Data
+ */
+class Client {
+    public username = "Bobby";
+    public UID: string = createHmac('sha256', randomBytes(4)).digest().toString();
+    public status: Status = "Online";
+}
+
+
 /**
  * Client Node Class that handles Sub-Server 
  *  and Client Data Transfers and Incomming.
  */
-export class ClientNode {
+export class ClientNode extends Client {
     private clientSocket: Socket;
-    private username = "Bobby";
-    private UID: string = createHmac('sha256', randomBytes(4)).digest().toString();    // For now
-    private status: Status = "Online";
     private connectStatus = false;
+    private friendsList: Client[];
 
     /**
      * Initiate Client Side
      *  - Client Socket Creation
      */
     constructor() {
+        // Call Super Class
+        super();
+        
         // Create the Client Socket
         this.clientSocket = createConnection({
             host: CLIENT_DATA.address.address,
@@ -63,9 +75,31 @@ export class ClientNode {
                 const response = (msgObj as RequestData).response;
                 const responseType = (msgObj as RequestData).responseType;
 
+                
                 // Check if Response
                 if (response !== null) {
-                    ChatHistory.createNotificationSection(`${response} ${ responseType === 'connected' ? 'Connected' : 'Disconnected' }!`);
+                    ChatHistory.createNotificationSection(`${response} ${ responseType.connectType === 'connected' ? 'Connected' : 'Disconnected' }!`);
+                    
+                    
+                    // Construct Client & Append to List
+                    if (responseType.connectType === 'connected') {
+                        const client: Client = new Client();
+                        client.UID = (msgObj as RequestData).responseType.UID;
+                        client.status = (msgObj as RequestData).responseType.status;
+                        client.username = response;
+                        
+                        this.friendsList.push(client);
+                    }
+
+                    // Remove Client from List                    
+                    else {
+                        // Search + Remove based on UID
+                        for (let i = 0; i < this.friendsList.length; i++) {
+                            if (this.friendsList[i].UID === (msgObj as RequestData).responseType.UID) {
+                                this.friendsList.splice(i, 1);                                
+                            }
+                        }
+                    }
                 }
                 
                 // Check Request Type
@@ -83,7 +117,13 @@ export class ClientNode {
                         (msgObj as RequestData).response = this.UID;
                     } else if (request === 'username') {
                         (msgObj as RequestData).response = this.username;
-                        (msgObj as RequestData).responseType = "connected";     // Set Connection Type
+                        
+                        // Construct Response Type
+                        ((msgObj as RequestData).responseType as ResponseType) = {
+                            connectType: "connected",
+                            status: this.status,
+                            UID: this.UID
+                        };
                     }
 
 
@@ -156,6 +196,10 @@ export class ClientNode {
                 }, 2000);
             }
         });
+
+
+        // Initiate Friends List Array
+        this.friendsList = [];
     }
 
 
@@ -211,6 +255,13 @@ export class ClientNode {
      */
     public getStatus(): Status {
         return this.status;
+    }
+
+    /**
+     * Returns Client Node's Friends List Array
+     */
+    public getFriendsList(): Client[] {
+        return this.friendsList;
     }
 
     /**
