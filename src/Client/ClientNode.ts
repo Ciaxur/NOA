@@ -96,7 +96,7 @@ export class ClientNode extends Client {
                         // Search + Remove based on UID
                         for (let i = 0; i < this.friendsList.length; i++) {
                             if (this.friendsList[i].UID === (msgObj as RequestData).responseType.UID) {
-                                this.friendsList.splice(i, 1);                                
+                                this.friendsList.splice(i, 1);
                             }
                         }
                     }
