@@ -75,60 +75,77 @@ export class ClientNode extends Client {
                 const response = (msgObj as RequestData).response;
                 const responseType = (msgObj as RequestData).responseType;
 
-                
-                // Check if Response
-                if (response !== null) {
-                    ChatHistory.createNotificationSection(`${response} ${ responseType.connectType === 'connected' ? 'Connected' : 'Disconnected' }!`);
-                    
-                    
-                    // Construct Client & Append to List
-                    if (responseType.connectType === 'connected') {
-                        const client: Client = new Client();
-                        client.UID = (msgObj as RequestData).responseType.UID;
-                        client.status = (msgObj as RequestData).responseType.status;
-                        client.username = response;
-                        
-                        this.friendsList.push(client);
-                    }
-
-                    // Remove Client from List                    
-                    else {
-                        // Search + Remove based on UID
-                        for (let i = 0; i < this.friendsList.length; i++) {
-                            if (this.friendsList[i].UID === (msgObj as RequestData).responseType.UID) {
-                                this.friendsList.splice(i, 1);
-                            }
+                // Check if any Response Specifications
+                // No Response Type means requesting SELF-UPDATE
+                if (responseType && responseType.connectType === null) {
+                    // Update Friends List Status
+                    for (let i = 0; i < this.friendsList.length; i++) {
+                        if (this.friendsList[i].UID === responseType.UID) { // Update Data for found Client
+                            this.friendsList[i].status = responseType.status;
+                            this.friendsList[i].username = response;
+                            break;
                         }
                     }
                 }
                 
-                // Check Request Type
+                // Response Type Means requesting data from current client
+                //  to requesting Client
                 else {
-                    // Store Request
-                    const request = (msgObj as RequestData).requestType;
-
-                    // Remove Response
-                    (msgObj as RequestData).requestType = null;
-
-                    // Check what to Do :)
-                    if (request === 'status') {
-                        (msgObj as RequestData).response = this.status;
-                    } else if (request === 'uid') {
-                        (msgObj as RequestData).response = this.UID;
-                    } else if (request === 'username') {
-                        (msgObj as RequestData).response = this.username;
+                    // Check if Response
+                    if (response !== null) {
+                        ChatHistory.createNotificationSection(`${response} ${responseType.connectType === 'connected' ? 'Connected' : 'Disconnected'}!`);
+                    
+                    
+                        // Construct Client & Append to List
+                        if (responseType.connectType === 'connected') {
+                            const client: Client = new Client();
+                            client.UID = (msgObj as RequestData).responseType.UID;
+                            client.status = (msgObj as RequestData).responseType.status;
+                            client.username = response;
                         
-                        // Construct Response Type
-                        ((msgObj as RequestData).responseType as ResponseType) = {
-                            connectType: "connected",
-                            status: this.status,
-                            UID: this.UID
-                        };
+                            // Update Friends List
+                            this.friendsList.push(client);
+                        }
+
+                        // Remove Client from List                    
+                        else {
+                            // Search + Remove based on UID
+                            for (let i = 0; i < this.friendsList.length; i++) {
+                                if (this.friendsList[i].UID === (msgObj as RequestData).responseType.UID) {
+                                    this.friendsList.splice(i, 1);
+                                }
+                            }
+                        }
                     }
+                
+                    // Check Request Type
+                    else {
+                        // Store Request
+                        const request = (msgObj as RequestData).requestType;
+
+                        // Remove Response
+                        (msgObj as RequestData).requestType = null;
+
+                        // Check what to Do :)
+                        if (request === 'status') {
+                            (msgObj as RequestData).response = this.status;
+                        } else if (request === 'uid') {
+                            (msgObj as RequestData).response = this.UID;
+                        } else if (request === 'username') {
+                            (msgObj as RequestData).response = this.username;
+                        
+                            // Construct Response Type
+                            ((msgObj as RequestData).responseType as ResponseType) = {
+                                connectType: "connected",
+                                status: this.status,
+                                UID: this.UID
+                            };
+                        }
 
 
-                    // Reply to Server
-                    this.clientSocket.write(Buffer.from(JSON.stringify(msgObj)));
+                        // Reply to Server
+                        this.clientSocket.write(Buffer.from(JSON.stringify(msgObj)));
+                    }
                 }
             }
 
@@ -239,6 +256,16 @@ export class ClientNode extends Client {
 
         // Send the Packet to Server
         this.clientSocket.write(packet);
+    }
+
+    /**
+     * Sends a Request Packet to Connected Clients
+     * @param packet - Request Data Packet Object
+     */
+    public sendRequestPacket(packet: RequestData): void {
+        // Construct Request Packet and Write to Socket
+        const buffer = Buffer.from(JSON.stringify(packet));
+        this.clientSocket.write(buffer);
     }
 
     /**
