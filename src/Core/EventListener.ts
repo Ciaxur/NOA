@@ -2,8 +2,9 @@ import * as $ from 'jquery';
 import { KEYS, CLIENT_DATA } from './Constants';
 import { ChatHistory } from '../Client/ChatHistory';
 import { ipcRenderer } from 'electron';
-import { MsgStructIPC, Status } from '../Interfaces/MessageData';
+import { MsgStructIPC, Status, MessageData } from '../Interfaces/MessageData';
 import { ClientNode } from '../Client/ClientNode';
+import { RequestData } from '../Interfaces/RequestData';
 
 /**
  * Initiate Document Event Listeners
@@ -121,8 +122,24 @@ export class EventListener {
 
             // Check if Change Status
             else if (arg.code === 'chat-status-change' && typeof (arg.message) === 'string') {
+                // Construct Client Node
+                const clientNode = (CLIENT_DATA.node as ClientNode);
+                
                 // Change Status according to massage
-                (CLIENT_DATA.node as ClientNode).setStatus(arg.message as Status);
+                clientNode.setStatus(arg.message as Status);
+
+
+                // Update Connected Clients about Status Change :)
+                const packet: RequestData = {
+                    requestType: null,              // Not Requesting Anything (Since Requesting Client to update)
+                    response: clientNode.username,  // Sender
+                    responseType: {                 // Data to Update
+                        UID: clientNode.UID,        // Based on UID not Sender
+                        connectType: null,
+                        status: clientNode.status
+                    }
+                };
+                clientNode.sendRequestPacket(packet);
             }
 
             // Check if Message Trigger
