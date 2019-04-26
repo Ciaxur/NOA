@@ -126,8 +126,6 @@ class ServerNode {
             clientSocket.on('end', () => {
                 console.log("Client Disconnected!", clientSocket.address());
 
-                // TODO: Figure out how to get UID from user that disconnected!
-                
                 // Broadcast to Users that Client Disconnected :(
                 const index = this.indexOfClientSocket(clientSocket);
                 const packet: RequestData = {
@@ -135,7 +133,7 @@ class ServerNode {
                     response: this.clientList[index].username,
                     responseType: {
                         connectType: 'disconnected',
-                        UID: null,
+                        UID: this.clientList[index].UID,
                         status: 'Offline'
                     }
                 };
@@ -162,6 +160,7 @@ class ServerNode {
                         // Find Index and Store Username ;)
                         const index = this.indexOfClientSocket(clientSocket);
                         this.clientList[index].username = responseObj.response;
+                        this.clientList[index].UID = responseObj.responseType.UID;
                     }
                 }
 
@@ -183,7 +182,7 @@ class ServerNode {
             console.log("New Connection from: ", socket.address());
 
             // Store Client
-            this.clientList.push({ socket, username: null });
+            this.clientList.push({ socket, username: null, UID: null });
 
             // Request Client MessageData (For Username and ID Verification)
             this.requestUserData(socket, {
