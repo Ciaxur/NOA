@@ -77,10 +77,34 @@ class ServerNode {
      * @param data - Data Buffer to Send
      * @param sender - Sender to Avoid Resending to
      */
-    private broadcast(data: Buffer, sender: Socket) {
+    private broadcast(data: Buffer, sender: Socket): void {
         for (const client of this.clientList) {
             if (client.socket !== sender) {
                 client.socket.write(data);
+            }
+        }
+    }
+
+
+    /**
+     * Update Client on Connected Clients
+     * Sends Client all other Client Data
+     * @param client - Client to Update on the existance of others
+     */
+    private updateClient(client: Socket): void{
+        for (let i = 0; i < this.clientList.length; i++) {
+            if (this.clientList[i].socket !== client) {
+                const packet: RequestData = {
+                    response: this.clientList[i].username,
+                    requestType: null,
+                    responseType: {
+                        UID: this.clientList[i].UID,
+                        connectType: 'connected',
+                        status: 'Online'
+                    }
+                };
+
+                client.write(Buffer.from(JSON.stringify(packet)));
             }
         }
     }
@@ -161,6 +185,10 @@ class ServerNode {
                         const index = this.indexOfClientSocket(clientSocket);
                         this.clientList[index].username = responseObj.response;
                         this.clientList[index].UID = responseObj.responseType.UID;
+
+
+                        // Update New Client on other Clients
+                        this.updateClient(clientSocket);
                     }
                 }
 
