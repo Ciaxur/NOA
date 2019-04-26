@@ -7,4 +7,5 @@ import { Socket } from "net";
 export interface ClientSocketList {
     socket: Socket;             // Client TCP Socket Object
     username: string;           // Client Username
+    UID: string;                // UID of User
 }
