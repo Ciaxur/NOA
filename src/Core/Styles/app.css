@@ -1,1 +1,9 @@
 /** Global Styling */
+
+/*
+    The First Friend Submenu Child
+*/
+.submenu-friend-firstchild {
+    border-top: #01C4AD solid 1px;
+    padding-top: 4px;
+}

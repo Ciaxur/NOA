@@ -21,10 +21,7 @@ $(document).ready(e => {
     SideMenu.initSideMenu();
 
     /**
-     * TODO: Update Status when other Client Changes it
-     * TODO: Make it to were if a user connects, ALL other users send their
-     *  "packet" to the user to update their friends list :)
-     * TODO: Add Animations
+     * TODO: Add Animations & Design
      */
     SideMenu.appendSubMenu("Friends List", (e: Element) => {
         // Get SubMenu Parent Element
@@ -37,7 +34,7 @@ $(document).ready(e => {
         // "Close" Friends List
         // Remove if Already Clicked to Append Friends
         if (friendsElements.length !== 0) {
-            for (let i = 0; i < friendsElements.length; i++) {
+            for (let i = friendsElements.length - 1; i >= 0; i--) {
                 parent.removeChild(friendsElements[i]);
             }
         }
@@ -54,6 +51,11 @@ $(document).ready(e => {
                 const div = document.createElement('div');
                 div.classList.add('menu-submenu');
                 div.classList.add('submenu-friend');
+
+                // Only for First Child
+                if(i === 0) {
+                    div.classList.add('submenu-friend-firstchild');
+                }
 
                 // Construct Smaller UID
                 // Append to Friends List
