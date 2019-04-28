@@ -1,4 +1,5 @@
 import { Socket } from "net";
+import { Status } from "./MessageData";
 
 /**
  * Clinet Socket List that holds Client Socket and Data
@@ -6,6 +7,7 @@ import { Socket } from "net";
  */
 export interface ClientSocketList {
     socket: Socket;             // Client TCP Socket Object
-    username: string;           // Client Username
-    UID: string;                // UID of User
+    UID: string;                // Client's UID
+    username: string;           // Client's Username
+    status: Status;             // Client's Status
 }
