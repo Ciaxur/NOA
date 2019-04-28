@@ -102,11 +102,13 @@ export abstract class SideMenu {
      * Appends a Sub Menu to the Side-Menu
      * @param menuName - The Sub-Menu's Name
      * @param fnOnClick - (Optional) On Click function for submenu, Parameter is the Sub-Menu Div Element 
+     * @param innerHTML - (Optional) Append Additinoal Data in the HTML
      */
-    public static appendSubMenu(menuName: string, fnOnClick?: (e:Element) => any): void {
+    public static appendSubMenu(menuName: string, fnOnClick?: (e:Element) => any, innerHTML?: string): void {
         const e = document.createElement('div');        // Create the Div Element
         e.classList.add("menu-submenu");                // Add the CSS Class for it
         e.textContent = menuName;                       // Add Text Content of Menu
+        e.innerHTML += innerHTML;                       // Append to innerHTML
         e.onclick = () => { fnOnClick(e); };            // Set onclick Function to SubMenu
         this.menuSelections.appendChild(e);             // Append Menu into the Menu Selection :)
     }
