@@ -77,56 +77,64 @@ export const ipcChannels = {};            // Key/Pair Channels (Used for Lookup)
 
 /** Initiate IPC Communication from Main */
 ipcMain.on('async-main', (e, arg: MsgStructIPC) => {
-    // Store IPC Communcation
-    if (arg.code === 'initialize') {
-        // Make sure it hasn't been stored before
-        //  store Channel for later use
-        if (ipcChannels[arg.from] === undefined) {
-            ipcChannels[arg.from] = e;
-        }
-    }
-
-    // Check if Chat Message Trigger
-    else if (arg.code === 'chat-message-tigger') {
-        // Set Main Window Status in Object
-        let msg = null;
-        if (typeof (arg.message) === 'object') {
-            msg = arg.message.message;
-        }
-
-        arg.message = {
-            focused: win.isFocused(),
-            minimized: win.isMinimized(),
-            status: (arg.message as any).status,
-            message: msg
-        };
-
-
-        // Flash Frame in Taskbar
-        // Only Flash if Online or Away
-        // No Flash if Busy
-        if ((!arg.message.focused            || arg.message.minimized) &&
-            (arg.message.status === "Online" || arg.message.status === "Away")) {
-            win.flashFrame(true);
-            win.once('focus', () => win.flashFrame(false));
-        }
-
-        
-        // Send data to Client Chat
-        ipcChannels["ClientChat"].sender.send('async-ClientChat', arg);
-    }
-
-    // Check if Broswer Window Manipulation
-    else if (arg.code === 'browserwindow-change') {
-        // Message of type String
-        if (typeof (arg.message) === 'string') {
-            if (arg.message === 'browserwindow-focus') {        // Set Main Browser Window to Focus
-                win.focus();
+    /**
+     * Switch Statemend based on the Argument's Code
+     */
+    switch (arg.code) {
+        // Store IPC Communcation
+        case 'initialize':
+            // Make sure it hasn't been stored before
+            //  store Channel for later use
+            if (ipcChannels[arg.from] === undefined) {
+                ipcChannels[arg.from] = e;
             }
-        }
+            break;
+        
+
+        // Check if Chat Message Trigger
+        case 'chat-message-tigger':
+            // Set Main Window Status in Object
+            let msg = null;
+            if (typeof (arg.message) === 'object') {
+                msg = arg.message.message;
+            }
+
+            arg.message = {
+                focused: win.isFocused(),
+                minimized: win.isMinimized(),
+                status: (arg.message as any).status,
+                message: msg
+            };
+
+
+            // Flash Frame in Taskbar
+            // Only Flash if Online or Away
+            // No Flash if Busy
+            if ((!arg.message.focused            || arg.message.minimized) &&
+                (arg.message.status === "Online" || arg.message.status === "Away")) {
+                win.flashFrame(true);
+                win.once('focus', () => win.flashFrame(false));
+            }
+
+            
+            // Send data to Client Chat
+            ipcChannels["ClientChat"].sender.send('async-ClientChat', arg);
+            break;
+    
+        
+        // Check if Broswer Window Manipulation
+        case 'browserwindow-change':
+            // Message of type String
+            if (typeof (arg.message) === 'string') {
+                if (arg.message === 'browserwindow-focus') {        // Set Main Browser Window to Focus
+                    win.focus();
+                }
+            }
+            break;
+    
+        default:
+            break;
     }
-
-
     
     // DEBUG
     console.log(`Async-Main Received: ${JSON.stringify(arg)}`);
