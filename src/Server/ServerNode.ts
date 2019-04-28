@@ -2,6 +2,7 @@ import { createServer, Server, Socket } from 'net';
 import { SERVER_DATA } from '../Core/Constants';
 import { RequestData, InstanceOfRequestData } from '../Interfaces/RequestData';
 import { ClientSocketList } from '../Interfaces/ClientSocketList';
+import { InstanceOfUpdateData, UpdateData } from '../Interfaces/UpdateData';
 
 
 /**
@@ -100,7 +101,7 @@ class ServerNode {
                     responseType: {
                         UID: this.clientList[i].UID,
                         connectType: 'connected',
-                        status: 'Online'
+                        status: this.clientList[i].status
                     }
                 };
 
@@ -176,21 +177,63 @@ class ServerNode {
 
                 // Check if Response Data Object
                 const obj = JSON.parse(data.toString());
+                // Find Client's Index
+                const index = this.indexOfClientSocket(clientSocket);
+
+                
+                // Check if RequestData Packet
                 if (InstanceOfRequestData(obj)) {
                     const responseObj: RequestData = obj;
                     
                     // Check Response Type
                     if (responseObj.responseType.connectType === 'connected') {
-                        // Find Index and Store Username ;)
-                        const index = this.indexOfClientSocket(clientSocket);
+                        // Store Username & UID ;)
                         this.clientList[index].username = responseObj.response;
                         this.clientList[index].UID = responseObj.responseType.UID;
+                        this.clientList[index].status = responseObj.responseType.status;
 
 
                         // Update New Client on other Clients
                         this.updateClient(clientSocket);
                     }
                 }
+
+                // Check if UpdateData Packet
+                else if (InstanceOfUpdateData(obj)){
+                    switch ((obj as UpdateData).code) {
+                        
+                        // Add Data
+                        case 'add':
+                            this.clientList.push({
+                                socket:     clientSocket,
+                                UID:        (obj as UpdateData).data.UID,
+                                username:   (obj as UpdateData).data.username,
+                                status:     (obj as UpdateData).data.status
+                            });
+                            break;
+                        
+                        // Update Data
+                        case 'update':
+                            this.clientList[index].UID      = (obj as UpdateData).data.UID;
+                            this.clientList[index].username = (obj as UpdateData).data.username;
+                            this.clientList[index].status   = (obj as UpdateData).data.status;
+                            break;
+
+                        // Remove Data based on UID
+                        case 'remove':
+                            for (let i = 0; i < this.clientList.length; i++) {
+                                if (this.clientList[i].UID === (obj as UpdateData).data.UID) {
+                                    this.clientList.splice(i, 1);
+                                }
+                            }
+                            break;
+
+                            
+                        default: break;
+                        
+                    }
+                }
+                
 
                 // Broadcast Data to other Connected Clients
                 this.broadcast(data, clientSocket);
@@ -210,7 +253,7 @@ class ServerNode {
             console.log("New Connection from: ", socket.address());
 
             // Store Client
-            this.clientList.push({ socket, username: null, UID: null });
+            this.clientList.push({ socket, username: null, UID: null, status: null });
 
             // Request Client MessageData (For Username and ID Verification)
             this.requestUserData(socket, {
@@ -246,6 +289,7 @@ class ServerNode {
         this.bindServer(this.PORT);
     }
 
+    
     /**
      * Switch Server Off
      */

@@ -2,9 +2,9 @@ import * as $ from 'jquery';
 import { KEYS, CLIENT_DATA } from './Constants';
 import { ChatHistory } from '../Client/ChatHistory';
 import { ipcRenderer } from 'electron';
-import { MsgStructIPC, Status, MessageData } from '../Interfaces/MessageData';
+import { MsgStructIPC, Status } from '../Interfaces/MessageData';
 import { ClientNode } from '../Client/ClientNode';
-import { RequestData } from '../Interfaces/RequestData';
+import { UpdateData } from '../Interfaces/UpdateData';
 
 /**
  * Initiate Document Event Listeners
@@ -115,13 +115,21 @@ export class EventListener {
         /** Client Chat Listener */
         ipcRenderer.on('async-ClientChat', (e, arg: MsgStructIPC) => {
             // Check if Change Username
-            if (arg.code === 'chat-user-change' && typeof(arg.message) === 'string') {
+            if (arg.code        === 'chat-user-change'      && typeof(arg.message)  === 'string') {
                 (CLIENT_DATA.node as ClientNode).changeUsername(arg.message);
                 ChatHistory.createNotificationSection(`Username Changed to, <span style="font-weight:normal">${arg.message}</span>`);
+
+                 // Update Connected Clients about Status Change :)
+                const clientNode = (CLIENT_DATA.node as ClientNode);
+                const packet: UpdateData = {
+                    code: "update",
+                    data: clientNode.getClientData()
+                };
+                clientNode.sendRequestPacket(packet);
             }
 
             // Check if Change Status
-            else if (arg.code === 'chat-status-change' && typeof (arg.message) === 'string') {
+            else if (arg.code   === 'chat-status-change'    && typeof (arg.message) === 'string') {
                 // Construct Client Node
                 const clientNode = (CLIENT_DATA.node as ClientNode);
                 
@@ -130,20 +138,16 @@ export class EventListener {
 
 
                 // Update Connected Clients about Status Change :)
-                const packet: RequestData = {
-                    requestType: null,              // Not Requesting Anything (Since Requesting Client to update)
-                    response: clientNode.username,  // Sender
-                    responseType: {                 // Data to Update
-                        UID: clientNode.UID,        // Based on UID not Sender
-                        connectType: null,
-                        status: clientNode.status
-                    }
+                const packet: UpdateData = {
+                    code: "update",
+                    data: clientNode.getClientData()
                 };
+                
                 clientNode.sendRequestPacket(packet);
             }
 
             // Check if Message Trigger
-            else if (arg.code === 'chat-message-tigger' && typeof(arg.message) === 'object') {
+            else if (arg.code   === 'chat-message-tigger'   && typeof(arg.message)  === 'object') {
                 // Check & Handle Focused
                 if (arg.message.focused) {
                     // Only Scroll if user is at Bottom
@@ -208,7 +212,7 @@ export class EventListener {
             }
 
             // Check if Browser Window Change
-            else if (arg.code === 'browserwindow-change' && typeof(arg.message) === 'string') {
+            else if (arg.code   === 'browserwindow-change'  && typeof(arg.message)  === 'string') {
                 // Broswer Came in Focus
                 if (arg.message === 'focused') {
                     // Focus on Message Box :)
