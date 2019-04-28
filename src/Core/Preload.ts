@@ -21,15 +21,18 @@ $(document).ready(e => {
     SideMenu.initSideMenu();
 
     /**
-     * TODO: Add Animations & Design
+     * Friends List SubMenu
+     *  - Displays Friends
+     *  - Shows Arrow that animates based on List State
      */
     SideMenu.appendSubMenu("Friends List", (e: Element) => {
         // Get SubMenu Parent Element
-        const parent = e.parentElement;
-        
-
+        // Get Arrow Element
         // Get Friends Elements
+        const parent = e.parentElement;
+        const arrowElt = e.getElementsByClassName("arrow-sm")[0];
         const friendsElements = parent.getElementsByClassName('submenu-friend');
+        
 
         // "Close" Friends List
         // Remove if Already Clicked to Append Friends
@@ -37,6 +40,10 @@ $(document).ready(e => {
             for (let i = friendsElements.length - 1; i >= 0; i--) {
                 parent.removeChild(friendsElements[i]);
             }
+
+            // Adjust Arrow Orientation
+            arrowElt.classList.remove('up');
+            arrowElt.classList.add('down');
         }
 
         // "Open" Friends List
@@ -64,7 +71,10 @@ $(document).ready(e => {
 
                 parent.appendChild(div);
             }
-        }
-    });
 
+            // Adjust Arrow Orientation
+            arrowElt.classList.remove('down');
+            arrowElt.classList.add('up');
+        }
+    }, ' <i class="arrow-sm down blue"></i>');
 });
