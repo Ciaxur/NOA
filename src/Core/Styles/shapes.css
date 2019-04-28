@@ -1,0 +1,50 @@
+/* Arrows */
+.arrow-md {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+    margin: 2px;
+    transition: transform 200ms;
+    -webkit-transition: -webkit-transform 200ms;
+}
+
+.arrow-sm {
+    border: solid black;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 2px;
+    margin: 2px;
+    transition: transform 200ms;
+    -webkit-transition: -webkit-transform 200ms;
+}
+
+/* Arrow Orientation */
+.right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}
+
+.left {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+}
+
+.up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+}
+
+.down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
+
+/* Arrow Colors */
+.white {
+    border-color: white;
+}
+
+.blue {
+    border-color: #01C4AD;
+}
