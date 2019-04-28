@@ -25,10 +25,11 @@
         - [x] Manual Change
         - [x] Auto Change
             - Status changes only if User's Status was online and Window was Minimized for 5 minutes
-    - [ ] Add Friends List
-        - [ ] Displays Status
-        - [ ] Displays Username
-        - [ ] Displays Part of their UID (Grayed out)
+    - [x] Add Friends List
+        - [x] Displays Status
+        - [x] Displays Username
+        - [x] Displays Part of their UID (Grayed out)
+        - [x] Fix Data Sync between Clients
     - [ ] 3rd Party Login
         - [ ] Google Account (Used mainly for UID)
     - [ ] Settings Options (File > Settings)
@@ -42,8 +43,9 @@
 
 
 ## Upcomming Changes / Plans (Notes...Later)
-- Add Friend's List
-    - Show Online Status
+- Friend's List
+    - Icons for Status (Plus Color)
+    - Display Info when clicked on Friend
 - Tray Icon
 - Notification Sounds
 - Better Interactive Notifications (for Mac OS)
