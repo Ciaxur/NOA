@@ -7,3 +7,7 @@
     border-top: #01C4AD solid 1px;
     padding-top: 4px;
 }
+
+.submenu-friend {
+    animation: fadeIn 200ms linear;
+}
