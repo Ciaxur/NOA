@@ -1,6 +1,7 @@
 # Directories Ignored
 out/*
 src/META-INF
+.vscode/ipch
 
 # Node Modules
 node_modules

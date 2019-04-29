@@ -1,12 +1,21 @@
+import { Status } from "./MessageData";
+
 // RequestType Type
 export type RequestType = 'username' | 'uid' | 'status';
 type connectType = 'connected' | 'disconnected';
+
+// Simple Response Object Interface
+export interface ResponseType {
+    connectType: connectType;
+    UID: string;
+    status: Status;
+}
 
 /** Request Data Structure */
 export interface RequestData {
     requestType:    RequestType;        // Requested Data
     response:       string;             // Responded Data
-    responseType:   connectType;         // Response Type
+    responseType:   ResponseType;       // Response Type
 }
 
 

@@ -11,7 +11,12 @@ export interface MessageData {
 
 
 /** Code Type */
-type IPC_Code = "initialize" | "chat-message-tigger" | "chat-user-change" | "chat-status-change" | "browserwindow-change";
+type IPC_Code =
+    "initialize" |                  // Client When Initialized
+    "chat-message-tigger" |         // Chat-Message Triggered
+    "chat-user-change" |            // Client Username Changed
+    "chat-status-change" |          // Client Status Changed
+    "browserwindow-change";         // Browser Window Event "Change"
 
 /** IPC Communication Structure */
 export interface MsgStructIPC {

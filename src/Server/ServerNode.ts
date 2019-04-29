@@ -2,6 +2,7 @@ import { createServer, Server, Socket } from 'net';
 import { SERVER_DATA } from '../Core/Constants';
 import { RequestData, InstanceOfRequestData } from '../Interfaces/RequestData';
 import { ClientSocketList } from '../Interfaces/ClientSocketList';
+import { InstanceOfUpdateData, UpdateData } from '../Interfaces/UpdateData';
 
 
 /**
@@ -77,10 +78,34 @@ class ServerNode {
      * @param data - Data Buffer to Send
      * @param sender - Sender to Avoid Resending to
      */
-    private broadcast(data: Buffer, sender: Socket) {
+    private broadcast(data: Buffer, sender: Socket): void {
         for (const client of this.clientList) {
             if (client.socket !== sender) {
                 client.socket.write(data);
+            }
+        }
+    }
+
+
+    /**
+     * Update Client on Connected Clients
+     * Sends Client all other Client Data
+     * @param client - Client to Update on the existance of others
+     */
+    private updateClient(client: Socket): void{
+        for (let i = 0; i < this.clientList.length; i++) {
+            if (this.clientList[i].socket !== client) {
+                const packet: RequestData = {
+                    response: this.clientList[i].username,
+                    requestType: null,
+                    responseType: {
+                        UID: this.clientList[i].UID,
+                        connectType: 'connected',
+                        status: this.clientList[i].status
+                    }
+                };
+
+                client.write(Buffer.from(JSON.stringify(packet)));
             }
         }
     }
@@ -131,7 +156,11 @@ class ServerNode {
                 const packet: RequestData = {
                     requestType: null,
                     response: this.clientList[index].username,
-                    responseType: 'disconnected'
+                    responseType: {
+                        connectType: 'disconnected',
+                        UID: this.clientList[index].UID,
+                        status: 'Offline'
+                    }
                 };
 
                 // Pack up Data and Broadcast it
@@ -148,16 +177,63 @@ class ServerNode {
 
                 // Check if Response Data Object
                 const obj = JSON.parse(data.toString());
+                // Find Client's Index
+                const index = this.indexOfClientSocket(clientSocket);
+
+                
+                // Check if RequestData Packet
                 if (InstanceOfRequestData(obj)) {
                     const responseObj: RequestData = obj;
                     
                     // Check Response Type
-                    if (responseObj.responseType === 'connected') {
-                        // Find Index and Store Username ;)
-                        const index = this.indexOfClientSocket(clientSocket);
+                    if (responseObj.responseType.connectType === 'connected') {
+                        // Store Username & UID ;)
                         this.clientList[index].username = responseObj.response;
+                        this.clientList[index].UID = responseObj.responseType.UID;
+                        this.clientList[index].status = responseObj.responseType.status;
+
+
+                        // Update New Client on other Clients
+                        this.updateClient(clientSocket);
                     }
                 }
+
+                // Check if UpdateData Packet
+                else if (InstanceOfUpdateData(obj)){
+                    switch ((obj as UpdateData).code) {
+                        
+                        // Add Data
+                        case 'add':
+                            this.clientList.push({
+                                socket:     clientSocket,
+                                UID:        (obj as UpdateData).data.UID,
+                                username:   (obj as UpdateData).data.username,
+                                status:     (obj as UpdateData).data.status
+                            });
+                            break;
+                        
+                        // Update Data
+                        case 'update':
+                            this.clientList[index].UID      = (obj as UpdateData).data.UID;
+                            this.clientList[index].username = (obj as UpdateData).data.username;
+                            this.clientList[index].status   = (obj as UpdateData).data.status;
+                            break;
+
+                        // Remove Data based on UID
+                        case 'remove':
+                            for (let i = 0; i < this.clientList.length; i++) {
+                                if (this.clientList[i].UID === (obj as UpdateData).data.UID) {
+                                    this.clientList.splice(i, 1);
+                                }
+                            }
+                            break;
+
+                            
+                        default: break;
+                        
+                    }
+                }
+                
 
                 // Broadcast Data to other Connected Clients
                 this.broadcast(data, clientSocket);
@@ -177,7 +253,7 @@ class ServerNode {
             console.log("New Connection from: ", socket.address());
 
             // Store Client
-            this.clientList.push({ socket, username: null });
+            this.clientList.push({ socket, username: null, UID: null, status: null });
 
             // Request Client MessageData (For Username and ID Verification)
             this.requestUserData(socket, {
@@ -213,6 +289,7 @@ class ServerNode {
         this.bindServer(this.PORT);
     }
 
+    
     /**
      * Switch Server Off
      */

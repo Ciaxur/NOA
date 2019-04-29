@@ -1,1 +1,13 @@
 /** Global Styling */
+
+/*
+    The First Friend Submenu Child
+*/
+.submenu-friend-firstchild {
+    border-top: rgba(1, 196, 173, 0.3) solid 1px;
+    padding-top: 4px;
+}
+
+.submenu-friend {
+    animation: fadeIn 200ms linear;
+}
