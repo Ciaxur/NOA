@@ -29,7 +29,7 @@
         "gulp-sourcemaps": "^2.6.5",
         "gulp-tslint": "^8.1.4",
         "gulp-typescript": "^5.0.1",
-        "lodash": ">=4.17.11"
+        "lodash": ">=4.17.13"
     },
     "dependencies": {
         "@types/jquery": "^3.3.29",
