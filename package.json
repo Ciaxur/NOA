@@ -21,6 +21,7 @@
     "license": "MIT",
     "private": false,
     "devDependencies": {
+        "axios": ">=0.18.1",
         "del": "^3.0.0",
         "electron-debug": "^2.1.0",
         "gulp": "^4.0.0",
@@ -29,12 +30,14 @@
         "gulp-sourcemaps": "^2.6.5",
         "gulp-tslint": "^8.1.4",
         "gulp-typescript": "^5.0.1",
-        "lodash": ">=4.17.11"
+        "lodash": "^4.17.15",
+        "mem": ">=4.0.0",
+        "set-value": ">=2.0.1"
     },
     "dependencies": {
         "@types/jquery": "^3.3.29",
         "electron": "^4.0.5",
-        "jquery": "^3.3.1",
+        "jquery": "^3.4.1",
         "tslint": "^5.14.0",
         "typescript": "^3.3.3"
     }
