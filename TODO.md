@@ -6,9 +6,7 @@
 - **GitHub**
     - [x] Add more Details to the **README** Markdown file
         - [x] Add images
-        - [ ] ~~Integrated Status Bars~~
         - [x] Add instructions
-        - [ ] ~~Add more **docs** file (Better Organized)~~
         - [x] Add to **Wiki**
 
 - **Aesthetics**
@@ -30,8 +28,7 @@
         - [x] Displays Username
         - [x] Displays Part of their UID (Grayed out)
         - [x] Fix Data Sync between Clients
-    - [ ] 3rd Party Login
-        - [ ] Google Account (Used mainly for UID)
+        - [ ] Be able to Close Friends List
     - [ ] Settings Options (File > Settings)
         - [ ] Create a Foudnation for Settings Window
     - [ ] Add more functionality to the Electron Menu
@@ -39,6 +36,7 @@
 
 - **Style Revamp**
     - [ ] Have multiple Themes Available to choose from
+    - [ ] Fix Small Spacing between SAME user message
 
 
 
@@ -49,7 +47,6 @@
 - Tray Icon
 - Notification Sounds
 - Better Interactive Notifications (for Mac OS)
-- ~~Code of conduct~~ *Did this in master*
 - Pull request template
 - Implement Continuous Integration Service
     - Implement **TravisCI**
