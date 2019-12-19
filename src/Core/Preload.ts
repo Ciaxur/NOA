@@ -34,16 +34,19 @@ $(document).ready(e => {
         const friendsElements = parent.getElementsByClassName('submenu-friend');
         
 
+        // Adjust Arrow Orientation
+        const downState = arrowElt.classList.contains("down");
+        arrowElt.classList.remove(downState ? "down" : "up");
+        arrowElt.classList.add(downState ? "up"   : "down");
+        
+        
+
         // "Close" Friends List
         // Remove if Already Clicked to Append Friends
         if (friendsElements.length !== 0) {
             for (let i = friendsElements.length - 1; i >= 0; i--) {
                 parent.removeChild(friendsElements[i]);
             }
-
-            // Adjust Arrow Orientation
-            arrowElt.classList.remove('up');
-            arrowElt.classList.add('down');
         }
 
         // "Open" Friends List
@@ -71,10 +74,7 @@ $(document).ready(e => {
 
                 parent.appendChild(div);
             }
-
-            // Adjust Arrow Orientation
-            arrowElt.classList.remove('down');
-            arrowElt.classList.add('up');
+            
         }
     }, ' <i class="arrow-sm down blue"></i>');
 });
