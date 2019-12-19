@@ -14,6 +14,8 @@
         - [x] Add to Push Notification
         - [x] Add to NOA
         - [x] Add to README
+    - [ ] Closer Text when same person Message
+        - [ ] Seperate Messages of Different People
 
 - **Client-Side** Implementations
     - [x] Status Changes
@@ -28,10 +30,15 @@
         - [x] Displays Username
         - [x] Displays Part of their UID (Grayed out)
         - [x] Fix Data Sync between Clients
-        - [ ] Be able to Close Friends List
+        - [x] Be able to Close Friends List
     - [ ] Settings Options (File > Settings)
         - [ ] Create a Foudnation for Settings Window
     - [ ] Add more functionality to the Electron Menu
+
+- **Practical Usage** Implementations
+    - [ ] RSA Encryption
+        - [ ] Secure way of Sharing Public Key
+
 
 
 - **Style Revamp**
